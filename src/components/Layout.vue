@@ -20,7 +20,7 @@
     height: 100vh;
 }
 .content{
-    overflow: auto; //显示滚动条
+    overflow: auto; //如果内容过多显示滚动条
     flex-grow: 1;
 }
 </style>
