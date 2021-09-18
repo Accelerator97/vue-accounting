@@ -1,12 +1,12 @@
 <template>
     <div>
-
+        <Nav/>
     </div>
 </template>
 
-<script>
+<script lang="ts">
     export default {
-        
+       name:'Label' 
     }
 </script>
 
