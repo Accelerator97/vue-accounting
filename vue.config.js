@@ -9,7 +9,7 @@ module.exports = {
             .include.add(dir).end() //只针对icons目录
             .use('svg-sprite-loader-mod').loader('svg-sprite-loader-mod').options({extract:false}).end()//extract:false是指不要解析成文件
             .use('svgo-loader').loader('svgo-loader')
-            .tap(options => ({...options,plugins:[{removeAttrs:{attrs:'fill'}}]})).end()
+            .tap(options => ({...options,plugins:[{removeAttrs:{attrs:'fill'}}]})).end()//去除svg中的fill样式
         config.plugin('svg-sprite').use(require('svg-sprite-loader/plugin'),[{plainSprite:true}])//配置插件
         config.module.rule('svg').exclude.add(dir)//其他svg loader排除icon目录
     }
