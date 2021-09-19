@@ -7,7 +7,7 @@
   </div>
 </template>
 
-<script >
+<script lang="ts" >
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 @Component
