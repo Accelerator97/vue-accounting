@@ -14,10 +14,6 @@ import {Component,Prop} from 'vue-property-decorator';
 export default  class Types extends Vue{
   type ='-';// '-'表示支出，'+'表示收入
   @Prop(Number) xxx:number | undefined
-  //Number告诉Vue xxx运行时是一个Number
-  //Prop告诉Vue xxx是prop 不是data
-  //xxx 是属性名
-  // number | undefined 就是xxx的类型，告诉TS的xxx编译时的类型
   selectType(type:string){
     if(type !== '-' && type !== '+'){
       throw new Error('type is unknown')
