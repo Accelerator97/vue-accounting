@@ -1,7 +1,5 @@
 <template>
-  <div>
     <Layout>记账</Layout>
-  </div>
 </template> 
 
 <script lang="ts">

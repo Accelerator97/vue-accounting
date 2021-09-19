@@ -13,14 +13,15 @@
     }
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 .nav-wrapper{
     display: flex;
     flex-direction: column;
     height: 100vh;
-}
-.content{
+    .content{
     overflow: auto; //如果内容过多显示滚动条
     flex-grow: 1;
 }
+}
+
 </style>
