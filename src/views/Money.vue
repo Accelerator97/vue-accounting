@@ -39,7 +39,7 @@ export default class Money extends Vue {
     this.record.amount = parseFloat(value);
   }
   saveRecord() {
-    const record2:RecordItem[] = model.clone(this.record); //深拷贝
+    const record2:RecordItem = model.clone(this.record); //深拷贝
     record2.createAt = new Date();
     this.recordList.push(record2);
     console.log(this.recordList);
