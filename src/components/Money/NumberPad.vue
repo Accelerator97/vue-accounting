@@ -13,7 +13,7 @@
       <button @click="inputContent">7</button>
       <button @click="inputContent">8</button>
       <button @click="inputContent">9</button>
-      <button class="ok">OK</button>
+      <button class="ok" @click="ok">OK</button>
       <button @click="inputContent" class="zero">0</button>
       <button @click="inputContent">.</button>
     </div>
@@ -26,7 +26,7 @@ import { Component } from "vue-property-decorator";
 @Component
 export default class Types extends Vue {
   output = "0";
-  inputContent(event: MouseEvent) {
+  inputContent(event: MouseEvent){
     const button = event.target as HTMLButtonElement;
     const input = button.textContent!;
     if (this.output.length === 16) {
@@ -54,6 +54,9 @@ export default class Types extends Vue {
   }
   clear() {
     this.output = "0";
+  }
+  ok(){
+    this.$emit('update:value',this.output)
   }
 }
 </script>
