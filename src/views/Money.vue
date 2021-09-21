@@ -1,8 +1,8 @@
 <template>
   <Layout class-prefix="layout">
-    <NumberPad @update:value="onUpdateAmount" @submit="saveRecord" />
+    <NumberPad  :value.sync="record.amount" @submit="saveRecord" />
     <Types :value.sync="record.type" />
-    <Notes @update:value="onUpdateNotes" />
+    <Notes field-name="备注" placeholder="在这里输入备注" @update:value="onUpdateNotes" />
     <Tags :data-source.sync="tags" @update:value="onUpdateTags" />
   </Layout>
 </template> 
@@ -45,14 +45,11 @@ export default class Money extends Vue {
   onUpdateNotes(value: string) {
     this.record.notes = value;
   }
-  onUpdateAmount(value: string) {
-    this.record.amount = parseFloat(value);
-  }
   saveRecord() {
     const record2:RecordItem = recordListModel.clone(this.record); //深拷贝
     record2.createAt = new Date();
     this.recordList.push(record2);
-    console.log(this.recordList);
+    // console.log(this.recordList);
   }
   @Watch("recordList")
   onRecordListChanged() {
