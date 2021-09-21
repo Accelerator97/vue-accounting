@@ -1,7 +1,12 @@
+import clone from "@/lib/clone"
+
 const recordListModel = {
     data:[] as RecordItem[],
-    clone(data:RecordItem[] | RecordItem){
-        return JSON.parse(JSON.stringify(data))
+    create(record:RecordItem){
+        const record2:RecordItem = clone(record); //深拷贝
+        record2.createAt = new Date();
+        this.data.push(record2);
+        // console.log(this.recordList);
     },
     fetch() {
         this.data = JSON.parse(window.localStorage.getItem('recordList') || '[]') as RecordItem[]

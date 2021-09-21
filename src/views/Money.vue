@@ -47,15 +47,12 @@ export default class Money extends Vue {
   onUpdateNotes(value: string) {
     this.record.notes = value;
   }
-  saveRecord() {
-    const record2:RecordItem = recordListModel.clone(this.record); //深拷贝
-    record2.createAt = new Date();
-    this.recordList.push(record2);
-    // console.log(this.recordList);
+  saveRecord() { //将record保存到recordListModel里面的data中
+    recordListModel.create(this.record)
   }
   @Watch("recordList")
   onRecordListChanged() {
-    recordListModel.save(this.recordList)
+    recordListModel.save()
   }
 }
 </script>
