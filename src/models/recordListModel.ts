@@ -1,4 +1,4 @@
-const model = {
+const recordListModel = {
     clone(data:RecordItem[] | RecordItem){
         return JSON.parse(JSON.stringify(data))
     },
@@ -10,4 +10,4 @@ const model = {
     }
 }
 
-export {model}
+export {recordListModel}

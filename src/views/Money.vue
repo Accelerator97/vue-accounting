@@ -1,6 +1,5 @@
 <template>
   <Layout class-prefix="layout">
-    {{ recordList }}
     <NumberPad @update:value="onUpdateAmount" @submit="saveRecord" />
     <Types :value.sync="record.type" />
     <Notes @update:value="onUpdateNotes" />
@@ -15,20 +14,31 @@ import Notes from "@/components/Money/Notes.vue";
 import Types from "@/components/Money/Types.vue";
 import NumberPad from "@/components/Money/NumberPad.vue";
 import { Component, Watch } from "vue-property-decorator";
-import { model } from "@/model";
+import { recordListModel } from "@/models/recordListModel";
+import { tagsListModel } from "@/models/tagsListModel";
+
+type RecordItem = {
+    tags: string[];
+    notes: string;
+    type: string;
+    amount: number;
+    createAt?:Date;
+}
 
 @Component({
   components: { Tags, Notes, Types, NumberPad },
 })
+
+
 export default class Money extends Vue {
-  tags = ["衣", "食", "住", "行", "彩票"];
+  tags = tagsListModel.fetch()
   record: RecordItem = {
     tags: [],
     notes: "",
     type: "-",
     amount: 0,
   };
-  recordList = model.fetch();
+  recordList = recordListModel.fetch();
   onUpdateTags(value: string[]) {
     this.record.tags = value;
   }
@@ -39,14 +49,14 @@ export default class Money extends Vue {
     this.record.amount = parseFloat(value);
   }
   saveRecord() {
-    const record2:RecordItem = model.clone(this.record); //深拷贝
+    const record2:RecordItem = recordListModel.clone(this.record); //深拷贝
     record2.createAt = new Date();
     this.recordList.push(record2);
     console.log(this.recordList);
   }
   @Watch("recordList")
   onRecordListChanged() {
-    model.save(this.recordList)
+    recordListModel.save(this.recordList)
   }
 }
 </script>
