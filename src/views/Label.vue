@@ -19,16 +19,11 @@ import Button from "@/components/Button.vue"
   components:{Button}
 })
 export default class Label extends Vue {
-  tags = tagsListModel.fetch();
+  tags = window.tagList
   createTag(){
     const name = window.prompt('请输入标签')
     if(name){
-      const message = tagsListModel.create(name)
-      if(message === 'success'){
-        window.alert('添加成功')
-      }else if(message === 'duplicated'){
-        window.alert('标签名重复')
-      }
+      window.createTag(name)
     }
   }
 

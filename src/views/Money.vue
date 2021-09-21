@@ -33,7 +33,7 @@ type RecordItem = {
 
 
 export default class Money extends Vue {
-  tags = tagsListModel.fetch()
+  tags = window.tagList
   record: RecordItem = {
     tags: [],
     notes: "",
