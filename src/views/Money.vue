@@ -17,7 +17,6 @@ import Types from "@/components/Money/Types.vue";
 import NumberPad from "@/components/Money/NumberPad.vue";
 import { Component, Watch } from "vue-property-decorator";
 import { recordListModel } from "@/models/recordListModel";
-import { tagsListModel } from "@/models/tagsListModel";
 
 type RecordItem = {
     tags: string[];
