@@ -1,4 +1,3 @@
-import { recordListModel } from '@/models/recordListModel'
 import clone from "@/lib/clone"
 
 // let data:RecordItem[] | undefined = undefined
@@ -13,11 +12,7 @@ const recordStore =  {
     saveRecords(){
         window.localStorage.setItem('recordList', JSON.stringify(this.recordList))
     },
-
-    createRecord: (record: RecordItem) => {
-      recordListModel.create(record)
-    },
-    create(record:RecordItem){
+    createRecord(record:RecordItem){
         const record2:RecordItem = clone(record); //深拷贝
         record2.createAt = new Date();
         this.recordList && this.recordList.push(record2);

@@ -7,9 +7,8 @@ import Nav from '@/components/Nav.vue'
 import Layout from '@/components/Layout.vue'
 import Icon from '@/components/Icon.vue'
 import FormItem from '@/components/FormItem.vue'
-import { tagsListModel } from './models/tagsListModel'
-import { recordListModel } from './models/recordListModel'
 Vue.config.productionTip = false
+
 Vue.component('Nav', Nav)
 Vue.component('Layout', Layout)
 Vue.component('Icon', Icon)

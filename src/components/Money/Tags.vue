@@ -4,20 +4,28 @@
       <button @click="createTag">新增标签</button>
     </div>
     <ul class="current">
-      <li v-for="tag in dataSource" :key="tag.id" @click="toggle(tag)" :class="{selected:selectedTags.indexOf(tag)>=0}">{{tag.name}}</li>
+      <li v-for="tag in tagList" :key="tag.id" @click="toggle(tag)" :class="{selected:selectedTags.indexOf(tag)>=0}">{{tag.name}}</li>
     </ul>
   </div>
 </template>
 
 <script lang="ts">
-import createId from "@/lib/createId";
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import store from '@/store/index2'
+import {mixins} from 'vue-class-component'
+import TagHelper from '@/mixins/TagHelper'
 @Component
-export default class Tags extends Vue {
-  @Prop() dataSource: string[] | undefined;
+
+export default class Tags extends mixins(TagHelper) {
   selectedTags: string[] = [];
+
+  get tagList(){
+    return this.$store.state.tagList
+  }
+
+  created(){
+    this.$store.commit('fetchTags')
+  }
 
   toggle(tag:string){
     const index = this.selectedTags.indexOf(tag)
@@ -27,19 +35,6 @@ export default class Tags extends Vue {
       this.selectedTags.push(tag)
     }
     this.$emit('update:value',this.selectedTags)
-  }
-
-  createTag(){
-    const name = window.prompt('请输入标签名') as string;
-    if(name === ''){
-      window.alert('标签名不能为空')
-    }else{
-      if(this.dataSource){
-        const id = createId()
-        this.$emit('update:dataSource',[...this.dataSource,name])
-        store.createTag(name)
-      }
-    }
   }
 }
 </script>
