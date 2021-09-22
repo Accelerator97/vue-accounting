@@ -1,12 +1,17 @@
 <template>
   <Layout>
     <div class="navBar">
-      <Icon name="left" class="leftIcon" @click="goback"/>
+      <Icon name="left" class="leftIcon" @click="goback" />
       <span class="title">编辑标签</span>
       <span class="rightIcon"></span>
     </div>
     <div class="form-wrapper">
-      <FormItem :value="tag.name" field-name="标签名" placeholder="请输入标签名" @update:value="update"></FormItem>
+      <FormItem
+        :value="tag.name"
+        field-name="标签名"
+        placeholder="请输入标签名"
+        @update:value="update"
+      ></FormItem>
     </div>
     <div class="button-wrapper">
       <Button @click="remove">删除标签</Button>
@@ -17,40 +22,35 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import { tagsListModel } from "@/models/tagsListModel";
-import Button from "@/components/Button.vue"
+import Button from "@/components/Button.vue";
 
 @Component({
-  components:{Button}
+  components: { Button },
 })
 export default class EditLabel extends Vue {
-  tag ?: {id:string,name:string} = undefined
+  tag?: { id: string; name: string } = undefined;
   created() {
-    const id = this.$route.params.id;
-    const tags = tagsListModel.fetch();
-    const tag = tags.filter((t) => t.id === id)[0];
-    if (tag) {
-      this.tag = tag
-    } else {
+    this.tag = window.findTag(this.$route.params.id);
+    if (!this.tag) {
       this.$router.replace("/404");
     }
   }
-  update(name:string){ //vue自动把event传进来
-      if(this.tag){
-          tagsListModel.update(this.tag.id,name)
+  update(name: string) {
+    //vue自动把event传进来
+    if (this.tag) {
+      window.updateTag(this.tag.id, name);
+    }
+  }
+  remove() {
+    if (this.tag) {
+      if (window.removeTag(this.tag.id)) {
+        this.$router.back();
       }
+    }
   }
-  remove(){
-      if(this.tag){
-        if(tagsListModel.remove(this.tag.id)){
-            this.$router.back()
-        }
-      }
+  goback() {
+    this.$router.back();
   }
-  goback(){
-      this.$router.back()
-  }
-
 }
 </script>
 
