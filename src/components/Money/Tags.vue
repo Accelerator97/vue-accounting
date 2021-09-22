@@ -13,6 +13,7 @@
 import createId from "@/lib/createId";
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
+import store from '@/store/index2'
 @Component
 export default class Tags extends Vue {
   @Prop() dataSource: string[] | undefined;
@@ -36,7 +37,7 @@ export default class Tags extends Vue {
       if(this.dataSource){
         const id = createId()
         this.$emit('update:dataSource',[...this.dataSource,name])
-        window.createTag(name)
+        store.createTag(name)
       }
     }
   }

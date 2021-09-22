@@ -16,8 +16,7 @@ import Tags from "@/components/Money/Tags.vue";
 import Types from "@/components/Money/Types.vue";
 import NumberPad from "@/components/Money/NumberPad.vue";
 import { Component, Watch } from "vue-property-decorator";
-import { recordListModel } from "@/models/recordListModel";
-
+import store from '@/store/index2'
 type RecordItem = {
     tags: string[];
     notes: string;
@@ -32,14 +31,14 @@ type RecordItem = {
 
 
 export default class Money extends Vue {
-  tags = window.tagList
+  tags = store.tagList
   record: RecordItem = {
     tags: [],
     notes: "",
     type: "-",
     amount: 0,
   };
-  recordList = window.recordList;
+  recordList = store.recordList;
   onUpdateTags(value: string[]) {
     this.record.tags = value;
   }
@@ -47,7 +46,7 @@ export default class Money extends Vue {
     this.record.notes = value;
   }
   saveRecord() { //将record保存到recordListModel里面的data中
-    window.createRecord(this.record)
+    store.createRecord(this.record)
   }
 }
 </script>
