@@ -1,8 +1,7 @@
 <template>
   <Layout class-prefix="layout">
-    {{ record }}
     <NumberPad :value.sync="record.amount" @submit="saveRecord" />
-    <Types :value.sync="record.type" />
+    <Tabs :data-source="recordTypeList" :value.sync="record.type" />
     <div class="notes">
       <FormItem
         field-name="备注"
@@ -17,9 +16,10 @@
 <script lang="ts">
 import Vue from "vue";
 import Tags from "@/components/Money/Tags.vue";
-import Types from "@/components/Money/Types.vue";
+import Tabs from "@/components/Tabs.vue";
 import NumberPad from "@/components/Money/NumberPad.vue";
 import { Component } from "vue-property-decorator";
+import recordTypeList from "@/constants/recordTypeList"
 
 type RecordItem = {
   tags: string[];
@@ -30,7 +30,7 @@ type RecordItem = {
 };
 
 @Component({
-  components: { Tags, Types, NumberPad },
+  components: { Tags, Tabs, NumberPad },
 })
 export default class Money extends Vue {
   get recordList() {
@@ -42,6 +42,7 @@ export default class Money extends Vue {
     type: "-",
     amount: 0,
   };
+  recordTypeList = recordTypeList
   created() {
     this.$store.commit("fetchRecords"); //从localstorage中拿到recordList
   }
