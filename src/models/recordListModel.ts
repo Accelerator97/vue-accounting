@@ -7,6 +7,7 @@ const recordListModel = {
         record2.createAt = new Date();
         this.data.push(record2);
         // console.log(this.recordList);
+        this.save()
     },
     fetch() {
         this.data = JSON.parse(window.localStorage.getItem('recordList') || '[]') as RecordItem[]

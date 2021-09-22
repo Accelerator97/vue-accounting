@@ -8,12 +8,19 @@ import Layout from '@/components/Layout.vue'
 import Icon from '@/components/Icon.vue'
 import FormItem from '@/components/FormItem.vue'
 import { tagsListModel } from './models/tagsListModel'
+import { recordListModel } from './models/recordListModel'
 Vue.config.productionTip = false
 Vue.component('Nav',Nav)
 Vue.component('Layout',Layout)  
 Vue.component('Icon',Icon)
 Vue.component('FormItem',FormItem)
 
+//record store
+window.recordList = recordListModel.fetch()
+window.createRecord = (record:RecordItem)=>{
+  recordListModel.create(record)
+}
+//tag store
 window.tagList = tagsListModel.fetch()
 window.findTag = (id:string) => {
   return window.tagList.filter(t=> t.id === id)[0]

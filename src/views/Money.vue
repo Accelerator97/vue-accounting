@@ -39,7 +39,7 @@ export default class Money extends Vue {
     type: "-",
     amount: 0,
   };
-  recordList = recordListModel.fetch();
+  recordList = window.recordList;
   onUpdateTags(value: string[]) {
     this.record.tags = value;
   }
@@ -47,11 +47,7 @@ export default class Money extends Vue {
     this.record.notes = value;
   }
   saveRecord() { //将record保存到recordListModel里面的data中
-    recordListModel.create(this.record)
-  }
-  @Watch("recordList")
-  onRecordListChanged() {
-    recordListModel.save()
+    window.createRecord(this.record)
   }
 }
 </script>
