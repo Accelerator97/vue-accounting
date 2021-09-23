@@ -1,12 +1,13 @@
 module.exports = {
   root: true,
   env: {
-    node: true
+    "browser": true,
+    "node": true
   },
   'extends': [
     'plugin:vue/essential',
-    'eslint:recommended',
-    '@vue/typescript/recommended'
+    "eslint:recommended",
+    '@vue/typescript/recommended',
   ],
   parserOptions: {
     ecmaVersion: 2020
@@ -27,6 +28,9 @@ module.exports = {
     }
   ],
   "globals": {
-    "__WebpackModuleApi": "writable"
+    "__WebpackModuleApi": "writable",
+  },
+  'rules':{
+    "no-undef": 0
   }
 }

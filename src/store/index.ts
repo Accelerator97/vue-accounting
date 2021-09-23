@@ -4,11 +4,7 @@ import clone from "@/lib/clone"
 import createId from "@/lib/createId"
 
 Vue.use(Vuex) //把store绑到vue.prototype上,初始化的时候会把store传给vue（main.ts中可以看到）
-type RootState = {
-  recordList: RecordItem[],
-  tagList: tag[],
-  currentTag?: tag
-}
+
 const store = new Vuex.Store({
   state: {  //data
     recordList: [],
@@ -24,7 +20,7 @@ const store = new Vuex.Store({
     },
     createRecord(state, record: RecordItem) {
       const record2: RecordItem = clone(record); //深拷贝
-      record2.createAt = new Date();
+      record2.createAt = new Date().toISOString();
       state.recordList.push(record2);
       store.commit('saveRecords')
     },
