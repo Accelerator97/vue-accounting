@@ -20,3 +20,21 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
+
+// window.addEventListener("load",function() {
+//   setTimeout(function(){
+//       // This hides the address bar:
+//       window.scrollTo(0, 1);
+//   }, 0);
+// });
+
+function safariHacks() {
+  const windowsVH = window.innerHeight / 100;
+  const layoutWrapper = document.querySelector('.layout-wrapper') as HTMLElement
+  layoutWrapper.style.setProperty('--vh', windowsVH + 'px');
+  window.addEventListener('resize', function() {
+    layoutWrapper.style.setProperty('--vh', windowsVH + 'px');
+  });
+}
+
+safariHacks();

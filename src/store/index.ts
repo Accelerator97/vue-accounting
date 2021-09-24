@@ -9,7 +9,8 @@ const store = new Vuex.Store({
   state: {  //data
     recordList: [],
     tagList: [],
-    currentTag: undefined
+    currentTag: undefined,
+    createRecordError:null
   } as RootState,
   mutations: { //method 同步操作,数据的增删改查,里面的函数只能接受两个参数，超过的话用payload
     fetchRecords(state) {
@@ -29,6 +30,12 @@ const store = new Vuex.Store({
     },
     fetchTags(state) {
       state.tagList = JSON.parse(window.localStorage.getItem('tagsList') || '[]')
+      if(!state.tagList ||state.tagList.length === 0){
+        store.commit('createTag','衣')
+        store.commit('createTag','食')
+        store.commit('createTag','住')
+        store.commit('createTag','行')
+      }
     },
     createTag(state, name: string) {
       const names = state.tagList.map(item => item.name)
