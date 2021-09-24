@@ -10,7 +10,8 @@ const store = new Vuex.Store({
     recordList: [],
     tagList: [],
     currentTag: undefined,
-    createRecordError:null
+    createRecordError:null,
+    createTagError:null
   } as RootState,
   mutations: { //method 同步操作,数据的增删改查,里面的函数只能接受两个参数，超过的话用payload
     fetchRecords(state) {
@@ -38,10 +39,12 @@ const store = new Vuex.Store({
       }
     },
     createTag(state, name: string) {
+      state.createTagError = null
       const names = state.tagList.map(item => item.name)
       const id = createId().toString()
       if (names.indexOf(name) >= 0) {
-        window.alert('标签名重复')
+        state.createTagError = new Error('tag name duplicated')
+        return 
       }
       state.tagList.push({ id: id, name: name })
       store.commit('saveTag')
