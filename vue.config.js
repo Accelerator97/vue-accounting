@@ -1,6 +1,9 @@
 const path = require('path')
 
 module.exports = {
+    publicPath: process.env.NODE_ENV === 'production'
+    ? '/accounting-web/'  //存放网页展示的仓库名，不是存放源代码的仓库
+    : '/',
     chainWebpack: config =>{
         const dir = path.resolve(__dirname,'src/assets/icons')
         config.module //config是vue对webpack进行封装暴露给用户使用
