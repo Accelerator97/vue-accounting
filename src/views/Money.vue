@@ -12,7 +12,6 @@
       </div>
       <div class="Money-createAt">
         <FormItem
-          field-name="日期"
           type="date"
           placeholder="在这里输入日期"
           :value.sync="record.createAt"
@@ -76,11 +75,18 @@ export default class Money extends Vue {
   flex-direction: column-reverse;
 }
 .DateandNotes {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  position: relative;
+  min-height: 50px;
+  margin-bottom:10px;
 }
 .Money-notes {
-  padding: 12px 0;
+  padding: 15px 0;
+  position: absolute;
+  left: 0;
+}
+.Money-createAt {
+  padding: 15px 0;
+  position: absolute;
+  right: 0;
 }
 </style>
