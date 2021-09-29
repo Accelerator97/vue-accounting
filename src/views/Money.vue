@@ -2,6 +2,7 @@
   <Layout class-prefix="layout">
     <NumberPad :value.sync="record.amount" @submit="saveRecord" />
     <Tabs :data-source="recordTypeList" :value.sync="record.type" />
+    <span>{{record}}</span>
     <div class="creatAt">
       <FormItem
         field-name="日期"
