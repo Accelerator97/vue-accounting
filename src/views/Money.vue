@@ -2,21 +2,22 @@
   <Layout class-prefix="layout">
     <NumberPad :value.sync="record.amount" @submit="saveRecord" />
     <Tabs :data-source="recordTypeList" :value.sync="record.type" />
-    <span>{{record}}</span>
-    <div class="creatAt">
-      <FormItem
-        field-name="日期"
-        type="date"
-        placeholder="在这里输入日期"
-        :value.sync="record.createAt"
-      />
-    </div>
-    <div class="Money-notes">
-      <FormItem
-        field-name="备注"
-        placeholder="在这里输入备注"
-        :value.sync="record.notes"
-      />
+    <div class="DateandNotes">
+      <div class="Money-notes">
+        <FormItem
+          field-name="备注"
+          placeholder="在这里输入备注"
+          :value.sync="record.notes"
+        />
+      </div>
+      <div class="Money-createAt">
+        <FormItem
+          field-name="日期"
+          type="date"
+          placeholder="在这里输入日期"
+          :value.sync="record.createAt"
+        />
+      </div>
     </div>
     <Tags @update:value="onUpdateTags" />
   </Layout>
@@ -42,7 +43,7 @@ export default class Money extends Vue {
     notes: "",
     type: "-",
     amount: 0,
-    createAt:new Date().toISOString()
+    createAt: new Date().toISOString(),
   };
   recordTypeList = recordTypeList;
   created() {
@@ -73,6 +74,11 @@ export default class Money extends Vue {
 ::v-deep .layout-content {
   display: flex;
   flex-direction: column-reverse;
+}
+.DateandNotes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .Money-notes {
   padding: 12px 0;
