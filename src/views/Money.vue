@@ -62,7 +62,6 @@ export default class Money extends Vue {
     if(!this.record.amount || this.record.amount === 0){
        return window.alert("请输入金额");
     }
-    //将record保存到recordListModel里面的data中
     this.$store.commit("createRecord", this.record);
     if (this.$store.state.createRecordError === null) {
       window.alert("保存成功");

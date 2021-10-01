@@ -1,7 +1,12 @@
 <template>
   <Layout>
+    <Tabs :data-source="recordTypeList" :value.sync="type" />
     <div class="tags">
-      <router-link v-for="tag in tags" :key="tag.id" :to="`/label/edit/${tag.id}`" class="tag"><span>{{tag.name}}</span> <Icon name="right" /></router-link>
+      <router-link v-for="tag in tags" :key="tag.id" :to="`/label/edit/${tag.id}`" class="tag">
+      <Icon :iconName="tag.iconName" />
+      <span>{{tag.name}}</span> 
+      <Icon iconName="caozuo" class="edit"/>
+      </router-link>
     </div>
     <div class="createTag-Wrapper">
       <Button class="createTag" @click="createTag">新建标签</Button>
@@ -12,17 +17,21 @@
 <script lang="ts">
 import { Component } from "vue-property-decorator";
 import Button from "@/components/Button.vue"
+import Tabs from "@/components/Tabs.vue"
 import {mixins} from 'vue-class-component'
 import TagHelper from '@/mixins/TagHelper'
+import recordTypeList from "@/constants/recordTypeList";
 
 @Component({
-  components:{Button},
+  components:{Button,Tabs},
 })
 export default class Label extends mixins(TagHelper) {
+  recordTypeList = recordTypeList;
+  type='-'
   get tags(){
-    return this.$store.state.tagList
+    return this.$store.state.tagList.filter((tag: { mold: string; }) => tag.mold === this.type)
   }
-  beforeCreate() {
+  created() {
     this.$store.commit('fetchTags')
   }
 }
@@ -37,13 +46,15 @@ export default class Label extends mixins(TagHelper) {
     min-height: 44px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
     border-bottom: 1px solid #e6e6e6;
     svg {
-      width: 18px;
-      height: 18px;
+      width: 1.5em;
+      height: 1.5em;
       color: #666;
       margin-right: 16px;
+    }
+    .edit{
+      margin-left: auto;
     }
   }
 }

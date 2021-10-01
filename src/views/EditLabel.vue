@@ -23,16 +23,21 @@
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import Button from "@/components/Button.vue";
+import Tabs from "@/components/Tabs.vue";
 @Component({
-  components: { Button },
+  components: { Button,Tabs },
 })
 export default class EditLabel extends Vue {
   get currentTag(){
     return this.$store.state.currentTag
   }
+  get recordList() {
+    return (this.$store.state as RootState).recordList;
+  }
   created() {
     const id = this.$route.params.id;
     this.$store.commit('fetchTags')
+    this.$store.commit('fetchRecords')
     this.$store.commit('setCurrentTag',id)
     if (!this.currentTag) {
       this.$router.replace("/404");
@@ -64,8 +69,6 @@ export default class EditLabel extends Vue {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  > .title {
-  }
   > .leftIcon {
     width: 24px;
     height: 24px;

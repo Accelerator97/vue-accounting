@@ -10,9 +10,9 @@
         <Icon :iconName="tag.iconName"></Icon>
         <span>{{ tag.name }}</span>
       </li>
-      <li>
+      <li class="setting">
         <Icon iconName="shezhi" />
-        <span>设置</span>
+        <router-link :to="`/label`"><span>设置</span></router-link>
       </li>
     </ul>
   </div>
@@ -80,6 +80,9 @@ export default class Tags extends mixins(TagHelper) {
       &.selected {
         background: darken($bg, 50%);
         color: white;
+      }
+      &.setting{
+        cursor: pointer;
       }
     }
   }
