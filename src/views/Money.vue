@@ -83,10 +83,14 @@ export default class Money extends Vue {
   padding: 15px 0;
   position: absolute;
   left: 0;
+  top:50%;
+  transform:translateY(-50%)
 }
 .Money-createAt {
   padding: 15px 0;
   position: absolute;
   right: 0;
+  top: 50%;
+  transform:translateY(-50%)
 }
 </style>
