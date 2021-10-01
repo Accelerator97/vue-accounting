@@ -5,7 +5,9 @@
       :data-source="recordTypeList"
       :value.sync="type"
     />
-    <Chart :options="x" />
+    <div class="chart-wrapper" ref="chartWrapper">
+      <Chart :options="x" class="chart"/>
+    </div>
     <ol v-if="groupList.length >0 ">
       <li v-for="(group, index) in groupList" :key="index">
         <h3 class="title">
@@ -46,8 +48,7 @@ export default class Statistics extends Vue {
     return (this.$store.state as RootState).recordList;
   }
   get groupList() {
-    const { recordList } = this;
-
+    const { recordList } = this
     type Result = { title: string; total?: number; items: RecordItem[] }[];
     const newList = clone(recordList)
       .filter((r) => r.type === this.type)
@@ -83,6 +84,11 @@ export default class Statistics extends Vue {
   beforeCreate() {
     this.$store.commit("fetchRecords");
   }
+  mounted() {
+     const div = (this.$refs.chartWrapper as HTMLDivElement)
+     div.scrollLeft = div.scrollWidth;
+    
+  }
   tagsToString(tags: tag[]) {
     if (tags.length === 0) {
       return "无";
@@ -108,27 +114,36 @@ export default class Statistics extends Vue {
   }
       get x() {
        return {
+         grid:{
+           left:0,
+           right:0
+         },
          xAxis: {
            type: 'category',
            data: [
              '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
              '11', '12', '13', '14', '15', '16', '17', '18', '19', '20',
              '21', '22', '23', '24', '25', '26', '27', '28', '29', '30',
-           ]
+           ],
+           axisTick:{alignWithLabel:true},
+           axisLine:{lineStyle:{color:'#666'}}
          },
          yAxis: {
-           type: 'value'
+           type: 'value',
+           show:false
          },
          series: [{
+           symbol: 'circle',
+           symbolSize: 12,
+           itemStyle: {borderWidth: 1, color: '#666', borderColor: '#666'},
            data: [
              820, 932, 901, 934, 1290, 1330, 1320,
              820, 932, 901, 934, 1290, 1330, 1320,
-             820, 932, 901, 934, 1290, 1330, 1320,
-             820, 932, 901, 934, 1290, 1330, 1320, 1, 2
            ],
            type: 'line'
          }],
-         tooltip: {show: true}
+         tooltip: {show: true,triggerOn:'click',
+         position:'top',formatter:'{c}'}
        };
      }
 
@@ -168,5 +183,14 @@ export default class Statistics extends Vue {
 .no-result{
   padding: 16px;
   text-align: center;
+}
+.chart {
+   width: 430%;
+   &-wrapper{
+     overflow:auto;
+     &::-webkit-scrollbar {
+       display: none;
+     }
+   }
 }
 </style>
