@@ -1,10 +1,19 @@
 <template>
   <div class="tags">
-    <div class="new">
-      <button @click="createTag">新增标签</button>
-    </div>
     <ul class="current">
-      <li v-for="tag in tagList" :key="tag.id" @click="toggle(tag)" :class="{selected:selectedTags.indexOf(tag)>=0}">{{tag.name}}</li>
+      <li
+        v-for="tag in tagList"
+        :key="tag.id"
+        @click="toggle(tag)"
+        :class="{ selected: selectedTags.indexOf(tag) >= 0 }"
+      >
+        <Icon :iconName="tag.iconName"></Icon>
+        <span>{{ tag.name }}</span>
+      </li>
+      <li>
+        <Icon iconName="shezhi" />
+        <span>设置</span>
+      </li>
     </ul>
   </div>
 </template>
@@ -12,29 +21,26 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import {mixins} from 'vue-class-component'
-import TagHelper from '@/mixins/TagHelper'
+import { mixins } from "vue-class-component";
+import TagHelper from "@/mixins/TagHelper";
 @Component
-
 export default class Tags extends mixins(TagHelper) {
+  @Prop(String)readonly type!:string
   selectedTags: string[] = [];
-
-  get tagList(){
-    return this.$store.state.tagList
+  get tagList() {
+    return this.$store.state.tagList.filter((tag: { mold: string; }) => tag.mold === this.type)
   }
-
-  created(){
-    this.$store.commit('fetchTags')
+  created() {
+    this.$store.commit("fetchTags");
   }
-
-  toggle(tag:string){
-    const index = this.selectedTags.indexOf(tag)
-    if(index >= 0){
-      this.selectedTags.splice(index,1)
-    }else{
-      this.selectedTags.push(tag)
+  toggle(tag: string) {
+    const index = this.selectedTags.indexOf(tag);
+    if (index >= 0) {
+      this.selectedTags.splice(index, 1);
+    } else {
+      this.selectedTags.push(tag);
     }
-    this.$emit('update:value',this.selectedTags)
+    this.$emit("update:value", this.selectedTags);
   }
 }
 </script>
@@ -48,22 +54,31 @@ export default class Tags extends mixins(TagHelper) {
   display: flex;
   flex-direction: column-reverse;
   background: white;
-
+  max-height: 160px;
+  overflow: auto;
   > .current {
     display: flex;
     flex-wrap: wrap;
     overflow: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
     > li {
-      $bg:#d9d9d9;
-      background:$bg;
-      $h: 24px;
+      margin-bottom: 10px;
+      $bg: #d9d9d9;
+      background: $bg;
+      width: 20%;
+      $h: 48px;
       line-height: $h;
       height: $h;
       border-radius: $h/2;
       padding: 0 16px;
       margin-right: 12px;
-      &.selected{
-        background: darken($bg,50%);
+      span {
+        padding-left: 2px;
+      }
+      &.selected {
+        background: darken($bg, 50%);
         color: white;
       }
     }

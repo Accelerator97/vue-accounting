@@ -1,7 +1,6 @@
 <template>
   <Layout class-prefix="layout">
     <NumberPad :value.sync="record.amount" @submit="saveRecord" />
-    <Tabs :data-source="recordTypeList" :value.sync="record.type" />
     <div class="DateandNotes">
       <div class="Money-notes">
         <FormItem
@@ -12,13 +11,15 @@
       </div>
       <div class="Money-createAt">
         <FormItem
+          field-name="日期"
           type="date"
           placeholder="在这里输入日期"
           :value.sync="record.createAt"
         />
       </div>
     </div>
-    <Tags @update:value="onUpdateTags" />
+    <Tags @update:value="onUpdateTags" :type.sync="record.type"/>
+    <Tabs :data-source="recordTypeList" :value.sync="record.type" />
   </Layout>
 </template> 
 
@@ -27,7 +28,7 @@ import Vue from "vue";
 import Tags from "@/components/Money/Tags.vue";
 import Tabs from "@/components/Tabs.vue";
 import NumberPad from "@/components/Money/NumberPad.vue";
-import { Component } from "vue-property-decorator";
+import { Component,Watch } from "vue-property-decorator";
 import recordTypeList from "@/constants/recordTypeList";
 
 @Component({
@@ -52,12 +53,14 @@ export default class Money extends Vue {
     this.record.notes = value;
   }
   onUpdateTags(value: string[]) {
-    //收集四个组件的value到record
     this.record.tags = value;
   }
   saveRecord() {
     if (!this.record.tags || this.record.tags.length === 0) {
       return window.alert("至少选择一个标签");
+    }
+    if(!this.record.amount || this.record.amount === 0){
+       return window.alert("请输入金额");
     }
     //将record保存到recordListModel里面的data中
     this.$store.commit("createRecord", this.record);
@@ -66,6 +69,7 @@ export default class Money extends Vue {
       this.record.notes = "";
     }
   }
+
 }
 </script>
 
@@ -73,6 +77,9 @@ export default class Money extends Vue {
 ::v-deep .layout-content {
   display: flex;
   flex-direction: column-reverse;
+}
+::v-deep .tabs .tabs-item{
+  max-height: 48px;
 }
 .DateandNotes {
   position: relative;

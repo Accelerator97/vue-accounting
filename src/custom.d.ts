@@ -8,6 +8,8 @@ type RecordItem = {
 type tag = {
     id: string
     name: string
+    iconName:string,
+    mold:string
 }
 type RootState = {
     recordList: RecordItem[],
@@ -20,7 +22,7 @@ type TagListModel = {
     data: tag[],
     fetch: () => tag[]
     create: (name: string) => 'success' | 'duplicated' //success表示创建成功，duplicated表示创建重复
-    update: (name: string, id: string) => 'success' | 'not found' | 'duplicated'
+    update: (name: string, id: string,iconName:string) => 'success' | 'not found' | 'duplicated'
     remove: (id: string) => boolean
     save: () => void
 }

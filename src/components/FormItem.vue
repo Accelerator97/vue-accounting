@@ -4,7 +4,7 @@
       <span class="name">{{ this.fieldName }}</span>
       <template v-if="type === 'date'">
         <input
-          :type="text || type"
+          :type="'text' || type"
           :value="x(value)"
           @input="onValueChanged($event.target.value)"
           :placeholder="placeholder"
@@ -12,7 +12,7 @@
       </template>
       <template v-else>
         <input
-          :type="text || type"
+          :type=" 'text' || type"
           :value="value"
           @input="onValueChanged($event.target.value)"
           :placeholder="placeholder"

@@ -15,7 +15,7 @@
       <button @click="inputContent">9</button>
       <button class="ok" @click="ok">OK</button>
       <button @click="inputContent" class="zero">0</button>
-      <button @click="inputContent">.</button>
+      <button @click="inputContent" class="point">.</button>
     </div>
   </div>
 </template>
@@ -67,6 +67,7 @@ export default class NumberPad extends Vue {
 <style lang="scss" scoped>
 @import "~@/assets/style/helper.scss";
 .numberPad {
+  max-height: 290px;
   .output {
     @extend %innerShadow;
     font-size: 36px;
@@ -78,7 +79,7 @@ export default class NumberPad extends Vue {
     @extend %clearFix;
     > button {
       width: 25%;
-      height: 64px;
+      height: 48px;
       float: left;
       background: transparent;
       border: none;
@@ -87,8 +88,12 @@ export default class NumberPad extends Vue {
         height: 64 * 2px;
         float: right;
       }
+      &.point{
+        height: 48 + 16*3px;
+      }
       &.zero {
         width: 25 * 2%;
+        height: 48 + 16*3px;
       }
       $bg: #f2f2f2;
       &:nth-child(1) {
