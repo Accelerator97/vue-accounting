@@ -60,22 +60,26 @@ export default class Tags extends mixins(TagHelper) {
     display: flex;
     flex-wrap: wrap;
     overflow: auto;
+    justify-content: flex-start;
     &::-webkit-scrollbar {
       display: none;
     }
     > li {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       margin-bottom: 10px;
       $bg: #d9d9d9;
       background: $bg;
       width: 20%;
-      $h: 48px;
-      line-height: $h;
+      $h: 64px;
       height: $h;
-      border-radius: $h/2;
-      padding: 0 16px;
+      border-radius: 10px;
       margin-right: 12px;
       span {
         padding-left: 2px;
+        min-width: 2em;
       }
       &.selected {
         background: darken($bg, 50%);

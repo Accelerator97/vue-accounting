@@ -17,6 +17,7 @@ type RootState = {
     currentTag?: tag,
     createRecordError?:Error | null
     createTagError?:Error | null
+    updateTagError?:Error | null
 }
 type TagListModel = {
     data: tag[],
