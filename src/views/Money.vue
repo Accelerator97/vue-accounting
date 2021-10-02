@@ -1,17 +1,17 @@
 <template>
   <Layout class-prefix="layout">
     <NumberPad :value.sync="record.amount" @submit="saveRecord" />
-    <div class="DateandNotes">
-      <div class="Money-notes">
+    <div class="wrapper">
+      <div class="notes">
         <FormItem
-          field-name="备注"
+          field-name="备注:"
           placeholder="在这里输入备注"
           :value.sync="record.notes"
         />
       </div>
-      <div class="Money-createAt">
+      <div class="createAt">
         <FormItem
-          field-name="日期"
+          field-name="日期:"
           type="date"
           placeholder="在这里输入日期"
           :value.sync="record.createAt"
@@ -68,7 +68,6 @@ export default class Money extends Vue {
       this.record.notes = "";
     }
   }
-
 }
 </script>
 
@@ -76,23 +75,22 @@ export default class Money extends Vue {
 ::v-deep .layout-content {
   display: flex;
   flex-direction: column-reverse;
+  > .tags{
+    padding-top: 10px;
+  }
 }
-.tabs {
-  flex-grow: 1;
-}
-.DateandNotes {
+.wrapper {
   position: relative;
-  min-height: 50px;
-  margin-bottom:10px;
+  min-height: 40px;
 }
-.Money-notes {
+.notes {
   padding: 15px 0;
   position: absolute;
   left: 0;
   top:50%;
   transform:translateY(-50%)
 }
-.Money-createAt {
+.createAt {
   padding: 15px 0;
   position: absolute;
   right: 0;

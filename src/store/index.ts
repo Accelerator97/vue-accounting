@@ -73,12 +73,9 @@ const store = new Vuex.Store({
         const tagList2 = clone(state.tagList)
         tagList2.splice(index,1) //splice返回值是删除的元素，且会改变原数组
         const names = tagList2.map(item => item.name)
-        console.log(index)
-        console.log(names);
-        console.log(tagList2);
         if (names.indexOf(name) >= 0) {
           state.updateTagError = new Error('tag name duplicated')
-          window.alert(state.updateTagError)
+          return
         } else {
           const tag = state.tagList.filter(item => item.id === id)[0]
           tag.name = name

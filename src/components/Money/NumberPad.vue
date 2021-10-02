@@ -67,7 +67,6 @@ export default class NumberPad extends Vue {
 <style lang="scss" scoped>
 @import "~@/assets/style/helper.scss";
 .numberPad {
-  max-height: 290px;
   .output {
     @extend %innerShadow;
     font-size: 36px;
@@ -79,13 +78,13 @@ export default class NumberPad extends Vue {
     @extend %clearFix;
     > button {
       width: 25%;
-      height: 48px;
+      height: 64px;
       float: left;
       background: transparent;
       border: none;
       cursor: pointer;
       &.ok {
-        height: 64 * 2px;
+        height: 64 * 2 + 16*2px;
         float: right;
       }
       &.point{

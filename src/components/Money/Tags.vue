@@ -49,18 +49,18 @@ export default class Tags extends mixins(TagHelper) {
 @import "~@/assets/style/helper.scss";
 .tags {
   font-size: 14px;
-  padding: 16px;
-  flex-grow: 1;
+  padding: 5px;
   display: flex;
-  flex-direction: column-reverse;
+  flex-grow: 1;
   background: white;
-  max-height: 160px;
   overflow: auto;
   > .current {
     display: flex;
     flex-wrap: wrap;
+    flex-grow: 1;
     overflow: auto;
     justify-content: flex-start;
+    align-content: flex-start;
     &::-webkit-scrollbar {
       display: none;
     }
@@ -73,7 +73,7 @@ export default class Tags extends mixins(TagHelper) {
       $bg: #d9d9d9;
       background: $bg;
       width: 20%;
-      $h: 64px;
+      $h: 50px;
       height: $h;
       border-radius: 10px;
       margin-right: 12px;
