@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import clone from "@/lib/clone"
 import createId from "@/lib/createId"
-import recordTypeList from '@/constants/recordTypeList'
+import _ from 'lodash'
 
 Vue.use(Vuex) //把store绑到vue.prototype上,初始化的时候会把store传给vue（main.ts中可以看到）
 
@@ -69,7 +69,13 @@ const store = new Vuex.Store({
       state.updateTagError = null
       const idList = state.tagList.map(item => item.id)
       if (idList.indexOf(id) >= 0) {
-        const names = state.tagList.map(item => item.name)
+        const index = state.tagList.findIndex(item => item.id === id)
+        const tagList2 = clone(state.tagList)
+        tagList2.splice(index,1) //splice返回值是删除的元素，且会改变原数组
+        const names = tagList2.map(item => item.name)
+        console.log(index)
+        console.log(names);
+        console.log(tagList2);
         if (names.indexOf(name) >= 0) {
           state.updateTagError = new Error('tag name duplicated')
           window.alert(state.updateTagError)

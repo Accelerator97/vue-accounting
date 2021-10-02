@@ -77,8 +77,8 @@ export default class Money extends Vue {
   display: flex;
   flex-direction: column-reverse;
 }
-::v-deep .tabs .tabs-item{
-  max-height: 48px;
+.tabs {
+  flex-grow: 1;
 }
 .DateandNotes {
   position: relative;

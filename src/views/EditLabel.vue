@@ -70,13 +70,11 @@ export default class EditLabel extends Vue {
       window.alert('标签名不能为空或者不要超过四个字符')
       return
     }
-    console.log('1111')
     this.$store.commit('updateTag',{id:this.currentTag.id,name:tagName,iconName:this.currentTag.iconName,mold:type})
     if(this.$store.state.updateTagError === null){
       window.alert('保存成功')
       this.$router.back()
     }
-    console.log('2222')
   }
   remove() {
     if (this.currentTag) {
