@@ -40,7 +40,6 @@ export default class Tags extends mixins(TagHelper) {
     const index  = this.selectedTag.indexOf(tag)
     if(index>=0){
       this.selectedTag = this.selectedTag.filter(item => item.id !== tag.id)
-      console.log(this.selectedTag)
     }else{
       this.selectedTag = [tag]
       this.$emit('update:value',this.selectedTag)

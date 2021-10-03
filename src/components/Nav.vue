@@ -7,10 +7,13 @@
     <router-link to="/label" class="item" active-class="selected">
       <Icon iconName="label" />标签</router-link
     >
-
+    <router-link to="/detail" class="item" active-class="selected">
+      <Icon iconName="detail" />明细</router-link
+    >
     <router-link to="/statistics" class="item" active-class="selected">
       <Icon iconName="statistics" />统计</router-link
     >
+    
   </nav>
 </template>
 
