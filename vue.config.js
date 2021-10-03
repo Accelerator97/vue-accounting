@@ -1,6 +1,7 @@
 const path = require('path')
 
 module.exports = {
+    requireModuleExtension:true,
     publicPath: process.env.NODE_ENV === 'production'
     ? '/accounting-web/'  //存放网页展示的仓库名，不是存放源代码的仓库
     : '/',

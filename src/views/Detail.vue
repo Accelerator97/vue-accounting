@@ -4,20 +4,8 @@
       <div class="title">
         <span>明细</span>
       </div>
-      <div class="chooseDate">
-        <div class="chooseyear">
-          <select @change="getyear($event.target.value)">
-            <option v-for="y in years" :key="y" :value="y">{{ y }}</option>
-          </select>
-          <span>年</span>
-        </div>
-        <div class="chooseMonth">
-          <select @change="getmonth($event.target.value)">
-            <option v-for="m in 12" :key="m" :value="m">{{ m }}</option>
-          </select>
-          <span>月</span>
-        </div>
-      </div>
+      <DatePicker v-model="chooseDate2" type="month" placeholder="选择日期">
+      </DatePicker>
     </div>
 
     <ol v-if="groupList.length > 0">
@@ -60,6 +48,7 @@ export default class Detail extends Vue {
   get chooseDate() {
     return `${this.year}-${this.month}`;
   }
+  chooseDate2?: any = {}
   get years() {
     let endYear = dayjs().year();
     let y = 1970;
@@ -86,7 +75,6 @@ export default class Detail extends Vue {
     if (newList.length === 0) {
       return [];
     }
-    console.log(newList);
     const result: Result = [
       {
         title: dayjs(newList[0].createAt).format("YYYY-MM-DD"),
@@ -116,9 +104,6 @@ export default class Detail extends Vue {
   beforeCreate() {
     this.$store.commit("fetchRecords");
   }
-  mounted() {
-    console.log(this.groupList);
-  }
   getyear(y: number) {
     this.year = y;
   }
@@ -138,17 +123,26 @@ export default class Detail extends Vue {
       return day.format("M月D日");
     }
   }
+  mounted() {
+    console.log('111');
+    console.log(this.chooseDate2);
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .topNav {
+  //    height: 64px;
+  margin-bottom: 5px;
   .title {
     text-align: center;
     font-size: 24px;
   }
   .chooseDate {
     display: flex;
+    &-year {
+      border: none;
+    }
   }
 }
 
