@@ -5,7 +5,7 @@
         v-for="tag in tagList"
         :key="tag.id"
         @click="toggle(tag)"
-        :class="{ selected: selectedTags.indexOf(tag) >= 0 }"
+        :class="{selected:selectedTag.findIndex(item=>item.id === tag.id) >= 0}"
       >
         <Icon :iconName="tag.iconName"></Icon>
         <span>{{ tag.name }}</span>
@@ -23,24 +23,27 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import { mixins } from "vue-class-component";
 import TagHelper from "@/mixins/TagHelper";
+import clone from "@/lib/clone";
 @Component
 export default class Tags extends mixins(TagHelper) {
-  @Prop(String)readonly type!:string
-  selectedTags: string[] = [];
+  @Prop(String) readonly type!: string;
+  selectedTag: tag[] = [];
   get tagList() {
-    return this.$store.state.tagList.filter((tag: { mold: string; }) => tag.mold === this.type)
+    return this.$store.state.tagList.filter(
+      (tag: { mold: string }) => tag.mold === this.type
+    );
   }
   created() {
     this.$store.commit("fetchTags");
   }
-  toggle(tag: string) {
-    const index = this.selectedTags.indexOf(tag);
-    if (index >= 0) {
-      this.selectedTags.splice(index, 1);
-    } else {
-      this.selectedTags.push(tag);
+  toggle(tag: tag) {
+    const index  = this.selectedTag.findIndex(item => item.id === tag.id)
+    if(index>=0){
+      this.selectedTag = this.selectedTag.filter(item => item.id !== tag.id)
+    }else{
+      this.selectedTag = [tag]
+      this.$emit('update:value',this.selectedTag)
     }
-    this.$emit("update:value", this.selectedTags);
   }
 }
 </script>
@@ -85,7 +88,7 @@ export default class Tags extends mixins(TagHelper) {
         background: darken($bg, 50%);
         color: white;
       }
-      &.setting{
+      &.setting {
         cursor: pointer;
       }
     }

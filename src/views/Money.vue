@@ -39,7 +39,7 @@ export default class Money extends Vue {
     return this.$store.state.recordList;
   }
   record: RecordItem = {
-    tags: [],
+    tag: [],
     notes: "",
     type: "-",
     amount: 0,
@@ -53,10 +53,10 @@ export default class Money extends Vue {
     this.record.notes = value;
   }
   onUpdateTags(value: string[]) {
-    this.record.tags = value;
+    this.record.tag = value;
   }
   saveRecord() {
-    if (!this.record.tags || this.record.tags.length === 0) {
+    if (!this.record.tag || this.record.tag.length === 0) {
       return window.alert("至少选择一个标签");
     }
     if(!this.record.amount || this.record.amount === 0){

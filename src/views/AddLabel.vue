@@ -69,7 +69,6 @@ export default class extends Vue {
       window.alert("创建成功");
       this.$router.back();
     }else {
-      console.log(this.$store.state.createTagError);
       window.alert("创建失败：标签名重复");
       tagName = "";
     }
