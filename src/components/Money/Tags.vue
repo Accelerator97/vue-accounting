@@ -5,7 +5,7 @@
         v-for="tag in tagList"
         :key="tag.id"
         @click="toggle(tag)"
-        :class="{selected:selectedTag.findIndex(item=>item.id === tag.id) >= 0}"
+        :class="{selected:selectedTag.indexOf(tag) >= 0}"
       >
         <Icon :iconName="tag.iconName"></Icon>
         <span>{{ tag.name }}</span>
@@ -37,9 +37,10 @@ export default class Tags extends mixins(TagHelper) {
     this.$store.commit("fetchTags");
   }
   toggle(tag: tag) {
-    const index  = this.selectedTag.findIndex(item => item.id === tag.id)
+    const index  = this.selectedTag.indexOf(tag)
     if(index>=0){
       this.selectedTag = this.selectedTag.filter(item => item.id !== tag.id)
+      console.log(this.selectedTag)
     }else{
       this.selectedTag = [tag]
       this.$emit('update:value',this.selectedTag)
