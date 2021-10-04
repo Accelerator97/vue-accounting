@@ -1,24 +1,32 @@
 <template>
   <div id="app">
-    <router-view />
+    <router-view v-if="isRouterAlive" />
   </div>
 </template>
 
 <script lang="ts">
-export default {
+import Vue from "vue";
+import { Component, Provide } from "vue-property-decorator";
+
+@Component
+export default class App extends Vue {
+  isRouterAlive = true;
+  reload() {
+    this.isRouterAlive = false;
+    this.$nextTick(function () {
+      this.isRouterAlive = true;
+    });
+  }
+  @Provide() reloadWeb = this.reload;
   mounted() {
     const vh = window.innerHeight * 0.01;
-    // Then we set the value in the --vh custom property to the root of the document
     document.documentElement.style.setProperty("--vh", `${vh}px`);
-    // We listen to the resize event
     window.addEventListener("resize", () => {
-      // We execute the same script as before
       const vh = window.innerHeight * 0.01;
-      // console.log(vh);
       document.documentElement.style.setProperty("--vh", `${vh}px`);
     });
-  },
-};
+  }
+}
 </script>
 
 <style lang="scss">
@@ -36,7 +44,7 @@ body {
     display: none;
   }
 }
-#app{
+#app {
   max-width: 500px;
   margin: 0 auto;
 }

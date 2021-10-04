@@ -29,7 +29,7 @@ import Vue from "vue";
 import Tags from "@/components/Money/Tags.vue";
 import Tabs from "@/components/Tabs.vue";
 import NumberPad from "@/components/Money/NumberPad.vue";
-import { Component } from "vue-property-decorator";
+import { Component ,Inject} from "vue-property-decorator";
 import recordTypeList from "@/constants/recordTypeList";
 import dayjs from "dayjs";
 
@@ -37,6 +37,7 @@ import dayjs from "dayjs";
   components: { Tags, Tabs, NumberPad },
 })
 export default class Money extends Vue {
+  @Inject() reloadWeb: any 
   get recordList(): RecordItem[] {
     return this.$store.state.recordList;
   }
@@ -65,12 +66,11 @@ export default class Money extends Vue {
     if (!this.record.amount || this.record.amount === 0) {
       return window.alert("请输入金额");
     }
-    console.log(this.record);
+    console.log(this.record.tag);
     this.$store.commit("createRecord", this.record);
     if (this.$store.state.createRecordError === null) {
       window.alert("保存成功");
-      this.record.notes = "";
-      this.record.tag = [];
+      this.reloadWeb()
     }
   }
   getDate(xx: any) {
