@@ -21,11 +21,8 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import { mixins } from "vue-class-component";
-import TagHelper from "@/mixins/TagHelper";
-import clone from "@/lib/clone";
 @Component
-export default class Tags extends mixins(TagHelper) {
+export default class Tags extends Vue {
   @Prop(String) readonly type!: string;
   selectedTag: tag[] = [];
   get tagList() {

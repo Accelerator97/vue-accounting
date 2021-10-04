@@ -18,14 +18,13 @@
 import { Component } from "vue-property-decorator";
 import Button from "@/components/Button.vue"
 import Tabs from "@/components/Tabs.vue"
-import {mixins} from 'vue-class-component'
-import TagHelper from '@/mixins/TagHelper'
 import recordTypeList from "@/constants/recordTypeList";
+import Vue from "vue";
 
 @Component({
   components:{Button,Tabs},
 })
-export default class Label extends mixins(TagHelper) {
+export default class Label extends Vue {
   recordTypeList = recordTypeList;
   type='-'
   get tags(){
