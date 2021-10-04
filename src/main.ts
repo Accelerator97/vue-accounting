@@ -18,16 +18,35 @@ Vue.component('Icon', Icon)
 Vue.component('FormItem', FormItem)
 Vue.component('DatePicker',DatePicker);
 
+window.onload = function () {
+  document.addEventListener(
+    "touchstart",
+    function (event) {
+      if (event.touches.length > 1) {
+        event.preventDefault();
+      }
+    },
+    {
+      passive: false, // 关闭被动监听
+    }
+  );
+  let lastTouchEnd = 0;
+  document.addEventListener(
+    "touchend",
+    function (event) {
+      const now = new Date().getTime();
+      if (now - lastTouchEnd <= 300) {
+        event.preventDefault();
+      }
+      lastTouchEnd = now;
+    },
+    false
+  );
+};
+
 new Vue({
   router,
   store,
   render: h => h(App)
 }).$mount('#app')
-
-// window.addEventListener("load",function() {
-//   setTimeout(function(){
-//       // This hides the address bar:
-//       window.scrollTo(0, 1);
-//   }, 0);
-// });
 

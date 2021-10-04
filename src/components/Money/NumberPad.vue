@@ -85,15 +85,15 @@ export default class NumberPad extends Vue {
       border: none;
       cursor: pointer;
       &.ok {
-        height: 144px;
+        min-height: 144px;
         float: right;
       }
       &.point{
-        height: 48 + 16*3px;
+        min-height: 48 + 16*3px;
       }
       &.zero {
         width: 25 * 2%;
-        height: 48 + 16*3px;
+        min-height: 48 + 16*3px;
       }
       $bg: #f2f2f2;
       &:nth-child(1) {

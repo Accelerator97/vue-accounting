@@ -1,6 +1,7 @@
 <template>
   <Layout class-prefix="layout">
-    <NumberPad :value.sync="record.amount" @submit="saveRecord" />
+    <Tabs :data-source="recordTypeList" :value.sync="record.type" />
+    <Tags @update:value="onUpdateTags" :type.sync="record.type" />
     <div class="wrapper">
       <div class="notes">
         <FormItem
@@ -19,8 +20,7 @@
         class="createAt"
       />
     </div>
-    <Tags @update:value="onUpdateTags" :type.sync="record.type" />
-    <Tabs :data-source="recordTypeList" :value.sync="record.type" />
+    <NumberPad :value.sync="record.amount" @submit="saveRecord" />
   </Layout>
 </template> 
 
@@ -29,7 +29,7 @@ import Vue from "vue";
 import Tags from "@/components/Money/Tags.vue";
 import Tabs from "@/components/Tabs.vue";
 import NumberPad from "@/components/Money/NumberPad.vue";
-import { Component ,Inject} from "vue-property-decorator";
+import { Component, Inject } from "vue-property-decorator";
 import recordTypeList from "@/constants/recordTypeList";
 import dayjs from "dayjs";
 
@@ -37,7 +37,7 @@ import dayjs from "dayjs";
   components: { Tags, Tabs, NumberPad },
 })
 export default class Money extends Vue {
-  @Inject() reloadWeb: any 
+  @Inject() reloadWeb: any;
   get recordList(): RecordItem[] {
     return this.$store.state.recordList;
   }
@@ -70,7 +70,7 @@ export default class Money extends Vue {
     this.$store.commit("createRecord", this.record);
     if (this.$store.state.createRecordError === null) {
       window.alert("保存成功");
-      this.reloadWeb()
+      this.reloadWeb();
     }
   }
   getDate(xx: any) {
@@ -80,16 +80,15 @@ export default class Money extends Vue {
 </script>
 
 <style lang="scss" scoped>
-::v-deep .layout-content {
+::v-deep .layout-content{
   display: flex;
-  flex-direction: column-reverse;
-  > .tags {
-    padding-top: 10px;
-  }
-  > .numberPad{
-    height: 50%;
-  }
+  flex-direction: column;
+  .tags {
+  padding-top: 10px;
+  flex-grow: 1;
 }
+}
+
 .wrapper {
   position: relative;
   min-height: 40px;

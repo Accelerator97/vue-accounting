@@ -51,7 +51,6 @@ export default class Tags extends Vue {
   font-size: 14px;
   padding: 5px;
   display: flex;
-  flex-grow: 1;
   background: white;
   overflow: auto;
   > .current {

@@ -1,15 +1,41 @@
 <template>
   <div id="app">
-    <router-view v-if="isRouterAlive" />
+    <router-view v-if="isRouterAlive" class="router-view" />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import { Component, Provide } from "vue-property-decorator";
+window.onload = function () {
+  document.addEventListener(
+    "touchstart",
+    function (event) {
+      if (event.touches.length > 1) {
+        event.preventDefault();
+      }
+    },
+    {
+      passive: false, // 关闭被动监听
+    }
+  );
+  let lastTouchEnd = 0;
+  document.addEventListener(
+    "touchend",
+    function (event) {
+      let now = new Date().getTime();
+      if (now - lastTouchEnd <= 300) {
+        event.preventDefault();
+      }
+      lastTouchEnd = now;
+    },
+    false
+  );
+};
 
 @Component
 export default class App extends Vue {
+  //提交后刷新页面
   isRouterAlive = true;
   reload() {
     this.isRouterAlive = false;
@@ -18,20 +44,15 @@ export default class App extends Vue {
     });
   }
   @Provide() reloadWeb = this.reload;
-  mounted() {
-    const vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty("--vh", `${vh}px`);
-    window.addEventListener("resize", () => {
-      const vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty("--vh", `${vh}px`);
-    });
-  }
 }
 </script>
 
 <style lang="scss">
 @import "~@/assets/style/reset.scss";
 @import "~@/assets/style/helper.scss";
+html{
+  height:100%;
+}
 body {
   font-family: $font-hei;
   font-size: 16px;
@@ -40,12 +61,24 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: #f5f5f5;
+  height: 100%;
   &::-webkit-scrollbar {
     display: none;
   }
 }
 #app {
   max-width: 500px;
-  margin: 0 auto;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 100%;
+  > .router-view {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
+}
+
 </style>
