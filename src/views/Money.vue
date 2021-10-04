@@ -9,16 +9,17 @@
           :value.sync="record.notes"
         />
       </div>
-      <div class="createAt">
-        <FormItem
-          field-name="日期:"
-          type="date"
-          placeholder="在这里输入日期"
-          :value.sync="record.createAt"
-        />
-      </div>
+      <DatePicker
+        v-model="record.createAt"
+        type="date"
+        format="yyyy-MM-dd"
+        value-format="yyyy-MM-dd"
+        placeholder="选择日期"
+        @change="getDate(record.createAt)"
+        class="createAt"
+      />
     </div>
-    <Tags @update:value="onUpdateTags" :type.sync="record.type"/>
+    <Tags @update:value="onUpdateTags" :type.sync="record.type" />
     <Tabs :data-source="recordTypeList" :value.sync="record.type" />
   </Layout>
 </template> 
@@ -28,8 +29,9 @@ import Vue from "vue";
 import Tags from "@/components/Money/Tags.vue";
 import Tabs from "@/components/Tabs.vue";
 import NumberPad from "@/components/Money/NumberPad.vue";
-import { Component,Watch } from "vue-property-decorator";
+import { Component } from "vue-property-decorator";
 import recordTypeList from "@/constants/recordTypeList";
+import dayjs from "dayjs";
 
 @Component({
   components: { Tags, Tabs, NumberPad },
@@ -43,11 +45,12 @@ export default class Money extends Vue {
     notes: "",
     type: "-",
     amount: 0,
-    createAt: new Date().toISOString(),
+    createAt: dayjs().format("YYYY-MM-DD"),
   };
   recordTypeList = recordTypeList;
   created() {
-    this.$store.commit("fetchRecords"); //从localstorage中拿到recordList
+    this.$store.commit("fetchRecords");
+    console.log(this.record.createAt);
   }
   onUpdateNotes(value: string) {
     this.record.notes = value;
@@ -57,17 +60,21 @@ export default class Money extends Vue {
   }
   saveRecord() {
     if (!this.record.tag || this.record.tag.length === 0) {
-      return window.alert("至少选择一个标签");
+      return window.alert("请选择标签");
     }
-    if(!this.record.amount || this.record.amount === 0){
-       return window.alert("请输入金额");
+    if (!this.record.amount || this.record.amount === 0) {
+      return window.alert("请输入金额");
     }
+    console.log(this.record);
     this.$store.commit("createRecord", this.record);
     if (this.$store.state.createRecordError === null) {
       window.alert("保存成功");
       this.record.notes = "";
       this.record.tag = [];
     }
+  }
+  getDate(xx: any) {
+    console.log(xx);
   }
 }
 </script>
@@ -76,26 +83,37 @@ export default class Money extends Vue {
 ::v-deep .layout-content {
   display: flex;
   flex-direction: column-reverse;
-  > .tags{
+  > .tags {
     padding-top: 10px;
+  }
+  > .numberPad{
+    height: 50%;
   }
 }
 .wrapper {
   position: relative;
   min-height: 40px;
-}
-.notes {
-  padding: 15px 0;
-  position: absolute;
-  left: 0;
-  top:50%;
-  transform:translateY(-50%)
-}
-.createAt {
-  padding: 15px 0;
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform:translateY(-50%)
+  .notes {
+    padding: 15px 0;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .createAt {
+    max-width: 40%;
+    background-color: inherit;
+    border: none;
+    padding: 15px 0;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    ::v-deep .el-input__inner {
+      border: transparent;
+      background-color: inherit;
+      padding-left: 40px;
+    }
+  }
 }
 </style>

@@ -23,9 +23,7 @@ const store = new Vuex.Store({
       window.localStorage.setItem('recordList', JSON.stringify(state.recordList))
     },
     createRecord(state, record: RecordItem) {
-      const record2: RecordItem = clone(record); //深拷贝
-      record2.createAt = record2.createAt || new Date().toISOString();
-      state.recordList.push(record2);
+      state.recordList.push(record);
       store.commit('saveRecords')
     },
     setCurrentTag(state, id: string) {

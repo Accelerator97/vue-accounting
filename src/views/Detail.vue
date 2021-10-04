@@ -1,14 +1,16 @@
 <template>
   <Layout>
-    <div class="topNav">
-      <div class="title">
-        <span>明细</span>
-      </div>
-      <DatePicker v-model="chooseDate2" type="month" placeholder="选择日期">
-      </DatePicker>
+    <div class="title">
+      <span>明细</span>
     </div>
-
-    <ol v-if="groupList.length > 0">
+    <DatePicker
+      v-model="chooseDate"
+      type="month"
+      value-format="yyyy-MM"
+      placeholder="选择日期"
+      class="chooseDate"
+    />
+    <ol v-if="groupList.length > 0" class="detail-list">
       <li v-for="group in groupList" :key="group.title" class="detail">
         <ol>
           <h3 class="detail-title">
@@ -29,7 +31,7 @@
         </ol>
       </li>
     </ol>
-    <div v-else>目前没有相关记录</div>
+    <div v-else class="notfound"><span> 目前没有相关记录</span></div>
   </Layout>
 </template>
 
@@ -43,22 +45,7 @@ import clone from "@/lib/clone";
   components: { FormItem, Icon },
 })
 export default class Detail extends Vue {
-  year?: number = dayjs().year();
-  month?: number = dayjs().month() + 1;
-  get chooseDate() {
-    return `${this.year}-${this.month}`;
-  }
-  chooseDate2?: any = {}
-  get years() {
-    let endYear = dayjs().year();
-    let y = 1970;
-    const result: number[] = [];
-    while (y <= endYear) {
-      result.unshift(y);
-      y++;
-    }
-    return result;
-  }
+  chooseDate = dayjs().format("YYYY-MM");
   get recordList() {
     return (this.$store.state as RootState).recordList;
   }
@@ -104,12 +91,6 @@ export default class Detail extends Vue {
   beforeCreate() {
     this.$store.commit("fetchRecords");
   }
-  getyear(y: number) {
-    this.year = y;
-  }
-  getmonth(m: number) {
-    this.month = m;
-  }
   beautify(title: string) {
     const now = dayjs();
     const day = dayjs(title);
@@ -123,39 +104,53 @@ export default class Detail extends Vue {
       return day.format("M月D日");
     }
   }
-  mounted() {
-    console.log('111');
-    console.log(this.chooseDate2);
-  }
 }
 </script>
 
 <style lang="scss" scoped>
-.topNav {
-  //    height: 64px;
+.title {
+  height: 64px;
   margin-bottom: 5px;
-  .title {
-    text-align: center;
-    font-size: 24px;
+  background: #c4c4c4;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 24px;
+  padding-top: 5px;
+}
+.chooseDate {
+  left: 50%;
+  transform: translateX(-50%);
+  ::v-deep .el-input__inner {
+    background-color: inherit;
+    padding-left: 70px;
   }
-  .chooseDate {
-    display: flex;
-    &-year {
-      border: none;
+}
+.detail-list {
+  overflow: auto;
+  .detail {
+    &:not(:first-child) {
+      margin-top: 15px;
+    }
+    &-title {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid black;
+    }
+    &-item {
+      &:not(:first-child) {
+        margin-top: 15px;
+      }
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
   }
 }
-
-.detail {
-  &-title {
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid black;
-  }
-  &-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+.notfound {
+  margin-top:15px;
+  text-align: center;
 }
 </style>
