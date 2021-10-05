@@ -5,7 +5,11 @@
         v-for="tag in tagList"
         :key="tag.id"
         @click="toggle(tag)"
-        :class="{ selected: selectedTag.indexOf(tag) >= 0 || previousTag[0].id === tag.id}"
+        :class="{
+          selected:
+            selectedTag.indexOf(tag) >= 0 ||
+            (previousTag && previousTag[0].id === tag.id),
+        }"
       >
         <Icon :iconName="tag.iconName"></Icon>
         <span>{{ tag.name }}</span>
@@ -31,17 +35,10 @@ export default class Tags extends Vue {
       (tag: { mold: string }) => tag.mold === this.type
     );
   }
-  // beforeCreate() {
-  //   if (this.previousTag) {
-  //     this.selectedTag = this.previousTag;
-  //   }
-  //   this.$forceUpdate();
-  // }
   created() {
     this.$store.commit("fetchTags");
     console.log(this.previousTag);
     // console.log(this.selectedTag)
-    
   }
   toggle(tag: tag) {
     const index = this.selectedTag.indexOf(tag);
