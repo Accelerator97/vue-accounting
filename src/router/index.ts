@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import Money from '@/views/Money.vue'
+import EditDetail from '@/views/EditDetail.vue'
 import Label from '@/views/Label.vue'
 import Detail from '@/views/Detail.vue'
-import EditDetail from '@/views/EditDetail.vue'
+import DetailItem from '@/views/DetailItem.vue'
 import Statistics from '@/views/Statistics.vue'
 import NotFound from '@/views/NotFound.vue'
 import EditLabel from '@/views/EditLabel.vue'
@@ -37,8 +38,12 @@ const routes: Array<RouteConfig> = [
     component: Detail
   },
   {
-    path: '/detail/:id',
-    component: EditDetail
+    path: '/detail/item',
+    component: DetailItem,
+  },
+  {
+    path: '/editdetail',
+    component: EditDetail,
   },
   {
     path: '/statistics',

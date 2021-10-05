@@ -106,8 +106,7 @@ export default class Detail extends Vue {
     }
   }
   editDetail(id:string){
-    console.log(id);
-    this.$router.push(`/detail/${id}`)
+    this.$router.push({path:'/detail/item',query:{id:id}})
   }
 }
 </script>

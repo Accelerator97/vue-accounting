@@ -1,7 +1,7 @@
 <template>
   <Layout class-prefix="layout">
     <Tabs :data-source="recordTypeList" :value.sync="record.type" />
-    <Tags @update:value="onUpdateTags" :type.sync="record.type" />
+    <Tags @update:value="onUpdateTag" :type.sync="record.type" />
     <div class="wrapper">
       <div class="notes">
         <FormItem
@@ -55,7 +55,7 @@ export default class Money extends Vue {
   onUpdateNotes(value: string) {
     this.record.notes = value;
   }
-  onUpdateTags(value: string[]) {
+  onUpdateTag(value: string[]) {
     this.record.tag = value;
   }
   saveRecord() {

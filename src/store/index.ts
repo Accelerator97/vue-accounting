@@ -3,42 +3,74 @@ import Vuex from 'vuex'
 import clone from "@/lib/clone"
 import createId from "@/lib/createId"
 import _ from 'lodash'
-import {nanoid} from 'nanoid'
+import { nanoid } from 'nanoid'
 
 Vue.use(Vuex) //把store绑到vue.prototype上,初始化的时候会把store传给vue（main.ts中可以看到）
 
 const store = new Vuex.Store({
-  state: {  //data
+  state: {
     recordList: [],
     tagList: [],
-    currentRecord:undefined,
+    currentRecord: undefined,
+    editRecord: undefined,
     currentTag: undefined,
     createRecordError: null,
     createTagError: null,
-    updateTagError:null,
-    groupList:[],
-  } as RootState,
+    updateTagError: null,
+    groupList: [],
+  } as unknown as RootState,
   mutations: { //method 同步操作,数据的增删改查,里面的函数只能接受两个参数，超过的话用payload
     fetchRecords(state) {
       state.recordList = JSON.parse(window.localStorage.getItem('recordList') || '[]')
     },
+    fetcheditRecord(state){
+      state.editRecord = JSON.parse(window.localStorage.getItem('editItem') || '[]')
+    },
     saveRecords(state) {
       window.localStorage.setItem('recordList', JSON.stringify(state.recordList))
     },
+    savaEditRecord(state){
+      window.localStorage.setItem('editItem',JSON.stringify(state.editRecord))
+    },
     createRecord(state, record: RecordItem) {
       const id = nanoid()
-      Object.defineProperty(record,'id',{
-        value:id,
-        writable:false,
+      Object.defineProperty(record, 'id', {
+        value: id,
+        writable: false,
         enumerable: true //默认添加的属性是不可枚举的，要设置为true
       })
       state.recordList.push(record);
       store.commit('saveRecords')
     },
-    setCurrentRecord(state,id:string){
-      state.currentRecord = state.recordList.filter(r=>r.id === id)[0]
-      console.log(state.currentRecord);
-      
+    setCurrentRecord(state, id: string) {
+      state.currentRecord = state.recordList.filter(r => r.id === id)[0]
+    },
+    setEditRecord(state,record){
+      state.editRecord = record
+    },
+    deleteRecord(state, id: string) {
+      let index = -1
+      for (let i = 0; i < state.recordList.length; i++) {
+        if (state.recordList[i].id === id) {
+          index = i
+          break
+        }
+      }
+      state.recordList.splice(index, 1)
+      store.commit('saveRecords')
+    },
+    updateRecord(state, record) {
+      const { id,amount, } = record
+      let index = -1
+      for (let i = 0; i < state.recordList.length; i++) {
+        if (state.recordList[i].id === id) {
+          index = i
+          break
+        }
+      }
+      state.recordList[index] = record 
+      store.commit('saveRecords')
+      window.localStorage.removeItem('editItem')
     },
     setCurrentTag(state, id: string) {
       state.currentTag = state.tagList.filter(t => t.id === id)[0]
@@ -76,14 +108,14 @@ const store = new Vuex.Store({
     saveTag(state) {
       window.localStorage.setItem('tagsList', JSON.stringify(state.tagList))
     },
-    updateTag(state, payload: { id: string, name: string, iconName: string,mold:string}) {
-      const { id, name, iconName,mold} = payload
+    updateTag(state, payload: { id: string, name: string, iconName: string, mold: string }) {
+      const { id, name, iconName, mold } = payload
       state.updateTagError = null
       const idList = state.tagList.map(item => item.id)
       if (idList.indexOf(id) >= 0) {
         const index = state.tagList.findIndex(item => item.id === id)
         const tagList2 = clone(state.tagList)
-        tagList2.splice(index,1) //splice返回值是删除的元素，且会改变原数组
+        tagList2.splice(index, 1) //splice返回值是删除的元素，且会改变原数组
         const names = tagList2.map(item => item.name)
         if (names.indexOf(name) >= 0) {
           state.updateTagError = new Error('tag name duplicated')

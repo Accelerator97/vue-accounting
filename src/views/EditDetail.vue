@@ -1,115 +1,115 @@
 <template>
-  <div class="editDetail">
-    <div class="navBar">
-      <Icon iconName="left" class="leftIcon" @click="goback" />
-      <span class="title">编辑明细</span>
-      <span class="rightIcon"></span>
+  <div class="editWrapper">
+    <Tabs :data-source="recordTypeList" :value.sync="editRecord.type" />
+    <Tags
+      @update:value="onUpdateTag"
+      :type.sync="editRecord.type"
+      :previousTag="editRecord.tag"
+      class="tags"
+    />
+    <div class="wrapper">
+      <div class="notes">
+        <FormItem
+          field-name="备注:"
+          placeholder="在这里输入备注"
+          :value.sync="editRecord.notes"
+        />
+      </div>
+      <DatePicker
+        v-model="editRecord.createAt"
+        type="date"
+        format="yyyy-MM-dd"
+        value-format="yyyy-MM-dd"
+        placeholder="选择日期"
+        class="createAt"
+      />
     </div>
-    <ul class="detail-item">
-      <li>
-        <span>{{ currentRecord.tag[0].name }}</span
-        ><Icon :iconName="currentRecord.tag[0].iconName" />
-      </li>
-      <li>
-        <span>类型</span>
-        <span v-if="currentRecord.type === '-'"> 支出 </span>
-        <span v-else>收入</span>
-      </li>
-      <li>
-        <span>金额</span>
-        <span>{{ currentRecord.amount }}</span>
-      </li>
-      <li>
-        <span>时间</span>
-        <span>{{ currentRecord.createAt }}</span>
-      </li>
-      <li>
-        <span>备注</span>
-        <span v-if="currentRecord.notes !== ''">{{ currentRecord.notes }}</span>
-        <span v-else>无</span>
-      </li>
-    </ul>
-    <div class="operation">
-      <Button class="delete">删除</Button>
-      <Button class="edit">编辑</Button>
-    </div>
+    <NumberPad :value.sync="editRecord.amount" @submit="updateRecord" />
   </div>
-</template>
+</template> 
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import Button from "@/components/Button.vue";
+import Vue from "vue";
+import Tags from "@/components/Money/Tags.vue";
+import Tabs from "@/components/Tabs.vue";
+import NumberPad from "@/components/Money/NumberPad.vue";
+import { Component, Watch } from "vue-property-decorator";
+import recordTypeList from "@/constants/recordTypeList";
 
 @Component({
-  components: { Button },
+  components: { Tags, Tabs, NumberPad },
 })
 export default class EditDetail extends Vue {
-  detailItem?: RecordItem;
-  get currentRecord() {
-    return this.$store.state.currentRecord;
-  }
   get recordList() {
     return this.$store.state.recordList;
   }
+  get editRecord(){
+    return this.$store.state.editRecord
+  }
+  recordTypeList = recordTypeList;
   created() {
     this.$store.commit("fetchRecords");
-    const id = this.$route.params.id;
-    this.$store.commit("setCurrentRecord", id);
-    if (!this.currentRecord) {
-      this.$router.replace("/404");
-    }
+    this.$store.commit("fetcheditRecord");
+    // console.log(this.editRecord);
   }
-  goback() {
+  onUpdateTag(value: []) {
+    this.editRecord.tag = value;
+    // console.log(value);
+  }
+  updateRecord() {
+    if (
+      !(this.editRecord as any).tag ||
+      (this.editRecord as any).tag.length === 0
+    ) {
+      return window.alert("请选择标签");
+    }
+    if (
+      !(this.editRecord as any).amount ||
+      (this.editRecord as any).amount === 0
+    ) {
+      return window.alert("请输入金额");
+    }
+    this.$store.commit("updateRecord",this.editRecord);
     this.$router.back();
+    
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.editDetail {
+.editWrapper{
   display: flex;
   flex-direction: column;
-  .navBar {
-    text-align: center;
-    font-size: 16px;
-    padding: 12px 16px; //整个navBar的高度为48，字体占了16，剩下的用padding来撑开
-    background: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    > .leftIcon {
-      width: 24px;
-      height: 24px;
-    }
-    > .rightIcon {
-      //为了实现左中右布局(space-between)，特地加了rightIcon
-      width: 24px;
-      height: 24px;
-    }
+  .tags{
+  flex-grow: 1;
+}
+.wrapper {
+  position: relative;
+  min-height: 40px;
+  .notes {
+    padding: 15px 0;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
   }
-  .detail-item {
-    li {
-      height: 36px;
-      display: flex;
-      justify-content: space-between;
-      padding: 0 10px;
-      &:not(:first-child) {
-        margin-top: 10px;
-      }
-    }
-  }
-  .operation {
-    margin-top: 40px;
-    display: flex;
-    justify-content: space-around;
-    .edit {
-      width: 96px;
-      text-align: center;
-    }
-    .delete {
-      width: 96px;
-      text-align: center;
+  .createAt {
+    max-width: 40%;
+    background-color: inherit;
+    border: none;
+    padding: 15px 0;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    ::v-deep .el-input__inner {
+      border: transparent;
+      background-color: inherit;
+      padding-left: 40px;
     }
   }
 }
+
+}
+
 </style>
