@@ -129,17 +129,16 @@ export default class EditLabel extends Vue {
 }
 .icons-list {
   ul {
-    width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
+    align-items: center;
     flex-wrap: wrap;
     li {
-      padding: 20px;
       width: 25%;
-      &:last-child{
-        margin-right:50%;
-      }
+      padding: 20px;
+      flex-basis:0;
       > .icon {
+        margin:  10px;
         width: 38px;
         height: 38px;
       }

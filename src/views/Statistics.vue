@@ -144,7 +144,7 @@ export default class Statistics extends Vue {
   }
 }
 .chooseDate {
-  margin-top: 10px;
+  padding-top: 10px;
   left: 50%;
   transform: translateX(-50%);
   ::v-deep .el-input__inner {
@@ -162,6 +162,16 @@ export default class Statistics extends Vue {
     padding-top: 10px;
     display: flex;
     justify-content: center;
+  }
+  .chart{
+    overflow: auto;
+    max-height: 395px;
+    ::v-deep .canvas{
+      height: inherit;
+    }
+    &::-webkit-scrollbar{
+      display: none;
+    }
   }
 }
 </style>

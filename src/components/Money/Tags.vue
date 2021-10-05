@@ -10,10 +10,9 @@
         <Icon :iconName="tag.iconName"></Icon>
         <span>{{ tag.name }}</span>
       </li>
-      <li class="setting">
-        <router-link :to="`/label`">
-          <div class="setting"><Icon iconName="shezhi" /><div>设置</div></div></router-link
-        >
+      <li @click="edit">
+        <Icon iconName="shezhi" />
+        <span>设置</span>
       </li>
     </ul>
   </div>
@@ -43,6 +42,9 @@ export default class Tags extends Vue {
       this.$emit("update:value", this.selectedTag);
     }
   }
+  edit() {
+    this.$router.push("/label");
+  }
 }
 </script>
 
@@ -50,20 +52,21 @@ export default class Tags extends Vue {
 @import "~@/assets/style/helper.scss";
 .tags {
   font-size: 14px;
-  padding: 5px;
+  padding-top: 5px;
   display: flex;
   background: white;
   overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   > .current {
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     flex-grow: 1;
-    overflow: auto;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-content: flex-start;
-    &::-webkit-scrollbar {
-      display: none;
-    }
+
     > li {
       display: flex;
       flex-direction: column;
@@ -73,10 +76,19 @@ export default class Tags extends Vue {
       $bg: #d9d9d9;
       background: $bg;
       width: 20%;
-      $h: 50px;
-      height: $h;
       border-radius: 10px;
       margin-right: 12px;
+      &:nth-child(4n) {
+        margin-right: 0;
+      }
+      /*最后一行是3个元素*/
+      &:last-child:nth-child(4n - 1) {
+        margin-right: calc(20% + 20% / 3);
+      }
+      /* 如果最后一行是2个元素 */
+      &:last-child:nth-child(4n - 2) {
+        margin-right: calc(40% + 40% / 3);
+      }
       span {
         padding-left: 2px;
         min-width: 2em;
@@ -85,24 +97,7 @@ export default class Tags extends Vue {
         background: darken($bg, 50%);
         color: white;
       }
-      &.setting {
-        cursor: pointer;
-      }
     }
-  }
-  > .new {
-    padding-top: 16px;
-    button {
-      background: transparent;
-      border: none;
-      color: #999;
-      border-bottom: 1px solid;
-      padding: 0 4px;
-    }
-  }
-  > .setting{
-    display: flex;
-    flex-direction: column;
   }
 }
 </style>

@@ -46,6 +46,10 @@ export default class Label extends Vue {
     display: flex;
     align-items: center;
     border-bottom: 1px solid #e6e6e6;
+    overflow: auto;
+    &::-webkit-scrollbar{
+      display: none;
+    }
     svg {
       width: 1.5em;
       height: 1.5em;

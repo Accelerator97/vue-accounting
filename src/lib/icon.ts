@@ -1,8 +1,8 @@
 const icons = [
     {id:1,iconName:'canying'},
     {id:2,iconName:'riyong'},
-    {id:3,iconName:'shezhi'},
-    {id:4,iconName:'qita'},
+    {id:3,iconName:'xuexi'},
+    {id:4,iconName:'kuaidi'},
     {id:5,iconName:'lijin'},
     {id:6,iconName:'licai'},
     {id:7,iconName:'jianzhi'},
@@ -18,7 +18,7 @@ const icons = [
     {id:17,iconName:'tongxun'},
     {id:18,iconName:'yule'},
     {id:19,iconName:'chongwu'},
-    {id:20,iconName:'yiliao'},
+    {id:20,iconName:'yaoping'},
 
 ]
 

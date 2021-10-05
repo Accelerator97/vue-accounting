@@ -107,10 +107,12 @@ export default class extends Vue {
   ul {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
     flex-wrap: wrap;
     li {
+      width: 25%;
       padding: 20px;
+      text-align: center;
       > .icon {
         width: 38px;
         height: 38px;

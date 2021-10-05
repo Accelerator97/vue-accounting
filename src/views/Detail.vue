@@ -22,9 +22,9 @@
             :key="index"
             class="detail-item"
           >
-            <div>
-              <Icon :iconName="item.tag[0].iconName"></Icon>
-              <span>{{ item.tag[0].name }}</span>
+            <div class="itemTag">
+              <Icon class="itemTag-Icon" :iconName="item.tag[0].iconName" ></Icon>
+              <span class="itemTag-Name" >{{ item.tag[0].name }}</span>
             </div>
             <span>{{ item.type }}{{ item.amount }}</span>
           </li>
@@ -131,8 +131,7 @@ export default class Detail extends Vue {
 }
 .detail-list {
   overflow: auto;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: 10px;
   .detail {
     &:not(:first-child) {
       margin-top: 15px;
@@ -140,7 +139,6 @@ export default class Detail extends Vue {
     &-title {
       display: flex;
       justify-content: space-between;
-      border-bottom: 1px solid black;
     }
     &-item {
       &:not(:first-child) {
@@ -149,6 +147,14 @@ export default class Detail extends Vue {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      border-bottom: 1px solid #e6e6e6;
+      > .itemTag{
+        width: 80px;
+        .itemTag-Name{
+          width: 48px;
+          margin-left: 10px;
+        }
+      }
     }
   }
 }
