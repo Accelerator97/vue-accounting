@@ -5,8 +5,7 @@
         v-for="tag in tagList"
         :key="tag.id"
         @click="toggle(tag)"
-        :class="{ selected:  selectedTag.indexOf(tag) >= 0 }"
-
+        :class="{ selected: selectedTag.indexOf(tag) >= 0 || previousTag[0].id === tag.id}"
       >
         <Icon :iconName="tag.iconName"></Icon>
         <span>{{ tag.name }}</span>
@@ -25,19 +24,24 @@ import { Component, Prop } from "vue-property-decorator";
 @Component
 export default class Tags extends Vue {
   @Prop(String) readonly type!: string;
-  @Prop() readonly previousTag?:tag[]
+  @Prop() readonly previousTag?: tag[];
   selectedTag: tag[] = [];
   get tagList() {
     return this.$store.state.tagList.filter(
       (tag: { mold: string }) => tag.mold === this.type
     );
   }
+  // beforeCreate() {
+  //   if (this.previousTag) {
+  //     this.selectedTag = this.previousTag;
+  //   }
+  //   this.$forceUpdate();
+  // }
   created() {
     this.$store.commit("fetchTags");
-    if(this.previousTag){
-      this.selectedTag = this.previousTag
-    }
-    this.$forceUpdate();
+    console.log(this.previousTag);
+    // console.log(this.selectedTag)
+    
   }
   toggle(tag: tag) {
     const index = this.selectedTag.indexOf(tag);
@@ -57,9 +61,8 @@ export default class Tags extends Vue {
 <style lang="scss" scoped>
 @import "~@/assets/style/helper.scss";
 .tags {
-  margin:0 10px;
   font-size: 14px;
-  padding-top: 5px;
+  padding: 10px;
   display: flex;
   background: white;
   overflow: auto;

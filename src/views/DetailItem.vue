@@ -109,6 +109,7 @@ export default class DetailItem extends Vue {
       display: flex;
       justify-content: space-between;
       padding: 0 10px;
+      border-bottom：1px solid #e6e6e6
       &:not(:first-child) {
         margin-top: 10px;
       }
