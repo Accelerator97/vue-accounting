@@ -18,6 +18,7 @@
             <span>结余：{{ group.total }}元</span>
           </h3>
           <li
+            @click="editDetail(item.id)"
             v-for="(item, index) in group.items"
             :key="index"
             class="detail-item"
@@ -103,6 +104,10 @@ export default class Detail extends Vue {
     } else if (day.isSame(now, "month")) {
       return day.format("M月D日");
     }
+  }
+  editDetail(id:string){
+    console.log(id);
+    this.$router.push(`/detail/${id}`)
   }
 }
 </script>

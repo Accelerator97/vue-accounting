@@ -28,11 +28,11 @@ const store = new Vuex.Store({
       const id = nanoid()
       Object.defineProperty(record,'id',{
         value:id,
-        writable:false
+        writable:false,
+        enumerable: true //默认添加的属性是不可枚举的，要设置为true
       })
       state.recordList.push(record);
       store.commit('saveRecords')
-      console.log(state.recordList)
     },
     setCurrentTag(state, id: string) {
       state.currentTag = state.tagList.filter(t => t.id === id)[0]
