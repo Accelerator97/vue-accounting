@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import clone from "@/lib/clone"
 import createId from "@/lib/createId"
 import _ from 'lodash'
+import {nanoid} from 'nanoid'
 
 Vue.use(Vuex) //把store绑到vue.prototype上,初始化的时候会把store传给vue（main.ts中可以看到）
 
@@ -24,8 +25,14 @@ const store = new Vuex.Store({
       window.localStorage.setItem('recordList', JSON.stringify(state.recordList))
     },
     createRecord(state, record: RecordItem) {
+      const id = nanoid()
+      Object.defineProperty(record,'id',{
+        value:id,
+        writable:false
+      })
       state.recordList.push(record);
       store.commit('saveRecords')
+      console.log(state.recordList)
     },
     setCurrentTag(state, id: string) {
       state.currentTag = state.tagList.filter(t => t.id === id)[0]

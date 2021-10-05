@@ -15,6 +15,7 @@
     "element-ui": "^2.15.6",
     "layui-laydate": "^5.3.1",
     "lodash": "^4.17.19",
+    "nanoid": "^3.1.28",
     "register-service-worker": "1.7.2",
     "vue": "2.6.14",
     "vue-class-component": "7.2.6",

@@ -4,6 +4,7 @@ type RecordItem = {
     type: string;
     amount: number;
     createAt?:string;
+    id?:string;
 }
 type tag = {
     id: string
