@@ -5,47 +5,50 @@
       :data-source="recordTypeList"
       :value.sync="type"
     />
-    <div class="chart-wrapper" ref="chartWrapper">
-      <Chart :options="chartOptions" class="chart" />
+    <DatePicker
+      v-model="chooseDate"
+      type="month"
+      value-format="yyyy-MM"
+      placeholder="选择日期"
+      class="chooseDate"
+    />
+    <div class="main">
+      <div class="report">
+        <div v-if="type === '-'">
+          本月支出：{{ groupList[0].total }}元
+          <div>共计{{ groupList[0].items.length }}条支出项目</div>
+        </div>
+        <div v-if="type === '+'">
+          本月收入：{{ groupList[0].total }}元
+          <div>共计{{ groupList[0].items.length }}条收入项目</div>
+        </div>
+      </div>
+      <div class="chart-wrapper" ref="chartWrapper">
+        <Chart :options="chartOptions" class="chart" />
+      </div>
     </div>
-    <ol v-if="groupList.length > 0">
-      <li v-for="(group, index) in groupList" :key="index">
-        <h3 class="title">
-          {{ beautify(group.title) }} <span>￥{{ group.total }}</span>
-        </h3>
-        <ol>
-          <li v-for="item in group.items" :key="item.id" class="record">
-            <span>{{ tagsToString(item.tags) }}</span>
-            <span class="notes">{{ item.notes }}</span>
-            <span> ￥{{ item.amount }}</span>
-          </li>
-        </ol>
-      </li>
-    </ol>
-    <div v-else class="no-result">目前没有相关记录</div>
   </Layout>
 </template>
 
 <script lang="ts">
 import Tabs from "@/components/Tabs.vue";
-import { Component } from "vue-property-decorator";
+import { Component, Watch } from "vue-property-decorator";
 import recordTypeList from "@/constants/recordTypeList";
-import intervalList from "@/constants/intervalList";
 import Vue from "vue";
 import dayjs from "dayjs";
 import clone from "@/lib/clone";
 import Chart from "@/components/Chart.vue";
 import _ from "lodash";
-import day from "dayjs";
+
+type CategoryArray = {name:string,value:number}
 
 @Component({
   components: { Tabs, Chart },
 })
 export default class Statistics extends Vue {
   type = "-";
-  interval = "day";
-  intervalList = intervalList;
   recordTypeList = recordTypeList;
+  chooseDate = dayjs().format("YYYY-MM");
   get recordList() {
     return (this.$store.state as RootState).recordList;
   }
@@ -53,122 +56,77 @@ export default class Statistics extends Vue {
     const { recordList } = this;
     type Result = { title: string; total?: number; items: RecordItem[] }[];
     const newList = clone(recordList)
-      .filter((r) => r.type === this.type)
-      .sort(
-        (a, b) => dayjs(b.createAt).valueOf() - dayjs(a.createAt).valueOf()
-      );
+      .filter(
+        (item) => dayjs(item.createAt).format("YYYY-MM") === this.chooseDate //月份筛选
+      )
+      .filter((item) => item.type === this.type); //支出或收入类型筛选
     if (newList.length === 0) {
-      return [];
+      return [{ title: this.chooseDate, items: [], total: 0 }];
     }
     const result: Result = [
       {
-        title: dayjs(newList[0].createAt).format("YYYY-MM-DD"),
-        items: [newList[0]],
+        title: dayjs(newList[0].createAt).format("YYYY-MM"),
+        items: newList,
       },
     ];
-    for (let i = 1; i < newList.length; i++) {
-      let current = newList[i];
-      let last = result[result.length - 1];
-      if (dayjs(last.title).isSame(dayjs(current.createAt), "day")) {
-        last.items.push(current);
-      } else {
-        result.push({
-          title: dayjs(current.createAt).format("YYYY-MM-DD"),
-          items: [current],
-        });
-      }
-    }
     result.forEach((group) => {
-      group.total = group.items.reduce((sum, items) => sum + items.amount, 0);
+      group.total = group.items.reduce(
+        (sum, items) => sum + parseFloat(items.type + items.amount),
+        0
+      );
     });
     return result;
   }
   beforeCreate() {
     this.$store.commit("fetchRecords");
   }
+  created() {
+    console.log(this.valueNameList);
+  }
   mounted() {
     const div = this.$refs.chartWrapper as HTMLDivElement;
     div.scrollLeft = div.scrollWidth;
   }
-  tagsToString(tags: tag[]) {
-    if (tags.length === 0) {
-      return "无";
-    } else {
-      const names = tags.map((item) => item.name);
-      return names.join(",");
+  get valueNameList() {
+    const totalMap = new Map();
+    const { items } = this.groupList[0];
+    for (let i = 0; i < items.length; i++) {
+      const name = (items[i].tag[0] as any).name;
+      const value = items[i].amount;
+      if (totalMap.has(name)) {
+        const preValue = totalMap.get(name);
+        const currentValue = preValue + value;
+        totalMap.set(name, currentValue);
+      } else {
+        totalMap.set(name, value);
+      }
     }
-  }
-  beautify(title: string) {
-    const day = dayjs(title);
-    const now = dayjs();
-    if (day.isSame(now, "day")) {
-      return "今天";
-    } else if (day.isSame(now.subtract(1, "day"), "day")) {
-      return "昨天";
-    } else if (day.isSame(now.subtract(2, "day"), "day")) {
-      return "前天";
-    } else if (day.isSame(now, "year")) {
-      return day.format("M月D日");
-    } else {
-      return day.format("YYYY年M月D日");
-    }
-  }
-  get keyValueList() {
-    const today = new Date();
-    const array = [];
-    for (let i = 0; i <= 29; i++) {
-      const dateString = day(today).subtract(i, "day").format("YYYY-MM-DD");
-      const found = _.find(this.groupList, { title: dateString });
-      array.push({ key: dateString, value: found ? found.total : 0 });
-      array.sort((a, b) => {
-        if (a.key > b.key) {
-          return 1;
-        } else if (a.key === b.key) {
-          return 0;
-        } else {
-          return -1;
-        }
-      });
-    }
-    return array;
+    return [...totalMap];
   }
   get chartOptions() {
-    const keys = this.keyValueList?.map((item) => item.key);
-    const values = this.keyValueList?.map((item) => item.value);
+    const chartData = this.valueNameList.reduce((result,item)=>{
+      result.push({'name':item[0],'value':item[1]})
+      return result
+    },[] as CategoryArray[])
     return {
-      grid: {
-        left: 0,
-        right: 0,
-      },
-      xAxis: {
-        type: "category",
-        data: keys,
-        axisTick: { alignWithLabel: true },
-        axisLine:{lineStyle:{color:'#666'}},
-        axisLabel: {
-          formatter: function (value: string, index: number) {
-            return value.substr(5);
-          },
-        },
-      },
-      yAxis: {
-        type: "value",
-        show: false,
-      },
       series: [
         {
-          symbol: "circle",
-          symbolSize: 12,
-          itemStyle: { borderWidth: 1, color: "#666", borderColor: "#666" },
-          data: values,
-          type: "line",
+          data: chartData,
+          type: "pie",
+          radius: "55%",
+          center: ["50%", "50%"],
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: "rgba(0, 0, 0, 0.5)",
+            },
+          },
         },
       ],
       tooltip: {
-        show: true,
-        triggerOn: "click",
-        position: "top",
-        formatter: "{c}",
+        trigger: "item",
+        formatter: "{b}:{c}元({d}%)",
       },
     };
   }
@@ -185,37 +143,25 @@ export default class Statistics extends Vue {
     }
   }
 }
-%item {
-  padding: 8px 16px;
-  line-height: 24px;
-  min-height: 40px;
-  display: flex;
-  justify-content: space-between;
-  align-content: center;
+.chooseDate {
+  margin-top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  ::v-deep .el-input__inner {
+    background-color: inherit;
+    padding-left: 70px;
+    font-size: 16px;
+  }
 }
-.title {
-  @extend %item;
-}
-.record {
-  @extend %item;
-  background: white;
-}
-.notes {
-  margin-right: auto;
-  margin-left: 8px;
-  color: #999;
-}
-.no-result {
-  padding: 16px;
-  text-align: center;
-}
-.chart {
-  width: 430%;
-  &-wrapper {
-    overflow: auto;
-    &::-webkit-scrollbar {
-      display: none;
-    }
+.main {
+  overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  .report {
+    padding-top: 10px;
+    display: flex;
+    justify-content: center;
   }
 }
 </style>

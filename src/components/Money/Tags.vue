@@ -5,14 +5,15 @@
         v-for="tag in tagList"
         :key="tag.id"
         @click="toggle(tag)"
-        :class="{selected:selectedTag.indexOf(tag) >= 0}"
+        :class="{ selected: selectedTag.indexOf(tag) >= 0 }"
       >
         <Icon :iconName="tag.iconName"></Icon>
         <span>{{ tag.name }}</span>
       </li>
       <li class="setting">
-        <Icon iconName="shezhi" />
-        <router-link :to="`/label`"><span>设置</span></router-link>
+        <router-link :to="`/label`">
+          <div class="setting"><Icon iconName="shezhi" /><div>设置</div></div></router-link
+        >
       </li>
     </ul>
   </div>
@@ -34,12 +35,12 @@ export default class Tags extends Vue {
     this.$store.commit("fetchTags");
   }
   toggle(tag: tag) {
-    const index  = this.selectedTag.indexOf(tag)
-    if(index>=0){
-      this.selectedTag = this.selectedTag.filter(item => item.id !== tag.id)
-    }else{
-      this.selectedTag = [tag]
-      this.$emit('update:value',this.selectedTag)
+    const index = this.selectedTag.indexOf(tag);
+    if (index >= 0) {
+      this.selectedTag = this.selectedTag.filter((item) => item.id !== tag.id);
+    } else {
+      this.selectedTag = [tag];
+      this.$emit("update:value", this.selectedTag);
     }
   }
 }
@@ -98,6 +99,10 @@ export default class Tags extends Vue {
       border-bottom: 1px solid;
       padding: 0 4px;
     }
+  }
+  > .setting{
+    display: flex;
+    flex-direction: column;
   }
 }
 </style>

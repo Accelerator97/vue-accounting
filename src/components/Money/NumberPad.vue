@@ -78,6 +78,7 @@ export default class NumberPad extends Vue {
   .buttons {
     @extend %clearFix;
     > button {
+      font-size:20px;
       width: 25%;
       height: 48px;
       float: left;
@@ -85,15 +86,15 @@ export default class NumberPad extends Vue {
       border: none;
       cursor: pointer;
       &.ok {
-        min-height: 144px;
+        height: 144px;
         float: right;
       }
       &.point{
-        min-height: 48 + 16*3px;
+        height: 48 + 16*3px;
       }
       &.zero {
         width: 25 * 2%;
-        min-height: 48 + 16*3px;
+        height: 48 + 16*3px;
       }
       $bg: #f2f2f2;
       &:nth-child(1) {

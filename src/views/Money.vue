@@ -51,7 +51,6 @@ export default class Money extends Vue {
   recordTypeList = recordTypeList;
   created() {
     this.$store.commit("fetchRecords");
-    console.log(this.record.createAt);
   }
   onUpdateNotes(value: string) {
     this.record.notes = value;
@@ -66,7 +65,6 @@ export default class Money extends Vue {
     if (!this.record.amount || this.record.amount === 0) {
       return window.alert("请输入金额");
     }
-    console.log(this.record.tag);
     this.$store.commit("createRecord", this.record);
     if (this.$store.state.createRecordError === null) {
       window.alert("保存成功");
@@ -80,15 +78,14 @@ export default class Money extends Vue {
 </script>
 
 <style lang="scss" scoped>
-::v-deep .layout-content{
+::v-deep .layout-content {
   display: flex;
   flex-direction: column;
   .tags {
-  padding-top: 10px;
-  flex-grow: 1;
+    padding-top: 10px;
+    flex-grow: 1;
+  }
 }
-}
-
 .wrapper {
   position: relative;
   min-height: 40px;

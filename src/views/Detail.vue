@@ -15,7 +15,7 @@
         <ol>
           <h3 class="detail-title">
             {{ beautify(group.title) }}
-            <span>{{ group.total }}</span>
+            <span>结余：{{ group.total }}元</span>
           </h3>
           <li
             v-for="(item, index) in group.items"
@@ -126,10 +126,13 @@ export default class Detail extends Vue {
   ::v-deep .el-input__inner {
     background-color: inherit;
     padding-left: 70px;
+    font-size: 16px;
   }
 }
 .detail-list {
   overflow: auto;
+  padding-left: 10px;
+  padding-right: 10px;
   .detail {
     &:not(:first-child) {
       margin-top: 15px;
@@ -150,7 +153,7 @@ export default class Detail extends Vue {
   }
 }
 .notfound {
-  margin-top:15px;
+  margin-top: 15px;
   text-align: center;
 }
 </style>

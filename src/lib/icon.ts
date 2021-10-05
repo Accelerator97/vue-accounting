@@ -17,6 +17,8 @@ const icons = [
     {id:16,iconName:'jiaotong'},
     {id:17,iconName:'tongxun'},
     {id:18,iconName:'yule'},
+    {id:19,iconName:'chongwu'},
+    {id:20,iconName:'yiliao'},
 
 ]
 
