@@ -11,6 +11,7 @@ const store = new Vuex.Store({
   state: {  //data
     recordList: [],
     tagList: [],
+    currentRecord:undefined,
     currentTag: undefined,
     createRecordError: null,
     createTagError: null,
@@ -33,6 +34,11 @@ const store = new Vuex.Store({
       })
       state.recordList.push(record);
       store.commit('saveRecords')
+    },
+    setCurrentRecord(state,id:string){
+      state.currentRecord = state.recordList.filter(r=>r.id === id)[0]
+      console.log(state.currentRecord);
+      
     },
     setCurrentTag(state, id: string) {
       state.currentTag = state.tagList.filter(t => t.id === id)[0]
