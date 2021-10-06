@@ -13,12 +13,15 @@
 </script>
 
 <style lang="scss" scoped>
+@import "~@/assets/style/helper.scss";
 .button {
   background: #ffda44;
   border-radius: 4px;
   border: none;
   height: 40px;
   padding: 0 16px;
+  color: #2c3e50;
+  font-family: $font-hei;
   &-Wrapper {
     text-align: center;
     padding: 16px;

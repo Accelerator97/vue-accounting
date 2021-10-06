@@ -73,8 +73,7 @@ export default class Label extends Vue {
   }
 }
 .createTag {
-  background: #767676;
-  color: white;
+  // font-family: ;
   border-radius: 4px;
   border: none;
   height: 40px;

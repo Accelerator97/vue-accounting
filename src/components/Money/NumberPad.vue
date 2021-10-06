@@ -2,23 +2,23 @@
   <div class="numberPad">
     <div class="output">{{ output }}</div>
     <div class="buttons">
-      <button @click="inputContent" class="inputButton">1</button>
-      <button @click="inputContent" class="inputButton">2</button>
-      <button @click="inputContent" class="inputButton">3</button>
-      <button @click="remove" class="inputButton">删除</button>
-      <button @click="inputContent" class="inputButton">4</button>
-      <button @click="inputContent" class="inputButton">5</button>
-      <button @click="inputContent" class="inputButton">6</button>
-      <button @click="inputContent" class="inputButton">+</button>
-      <button @click="inputContent" class="inputButton">7</button>
-      <button @click="inputContent" class="inputButton">8</button>
-      <button @click="inputContent" class="inputButton">9</button>
-      <button @click="inputContent" class="inputButton">-</button>
-      <button @click="inputContent" class="inputButton">.</button>
-      <button @click="inputContent" class="inputButton">0</button>
-      <button @click="clear" class="inputButton">清空</button>
+      <button @click="inputContent" >1</button>
+      <button @click="inputContent" >2</button>
+      <button @click="inputContent" >3</button>
+      <button @click="remove" >删除</button>
+      <button @click="inputContent" >4</button>
+      <button @click="inputContent" >5</button>
+      <button @click="inputContent" >6</button>
+      <button @click="inputContent" >+</button>
+      <button @click="inputContent" >7</button>
+      <button @click="inputContent" >8</button>
+      <button @click="inputContent" >9</button>
+      <button @click="inputContent" >-</button>
+      <button @click="inputContent" >.</button>
+      <button @click="inputContent" >0</button>
+      <button @click="clear" >清空</button>
       <button
-        v-if="'-+'.indexOf(finalStr) >= 0"
+        v-if=" finalStr && '-+'.indexOf(finalStr) >=0"
         @click="calculate(output)"
       >
         =
@@ -35,10 +35,13 @@ import { Component, Prop } from "vue-property-decorator";
 export default class NumberPad extends Vue {
   @Prop(Number) readonly value!: number;
   output = this.value.toString();
-  firstStr = "";
   finalStr = "";
   input = "";
   total = 0;
+  created(){
+    console.log(this.finalStr)
+    console.log('1111');
+  }
   inputContent(event: MouseEvent) {
     const button = event.target as HTMLButtonElement;
     this.input = button.textContent!;
@@ -117,15 +120,9 @@ export default class NumberPad extends Vue {
       height: 48px;
       float: left;
       background: transparent;
-      border: none;
-      cursor: pointer;
+      border: 1px solid #e4e4e4 ;
       &.ok {
         background: #ffda44;
-        border: 1px solid #e4e4e4;
-      }
-      &.inputButton {
-        background: #f7f7f7;
-        border: 1px solid #e4e4e4;
       }
     }
   }
