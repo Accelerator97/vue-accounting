@@ -155,11 +155,9 @@ export default class Detail extends Vue {
       border-bottom: 1px solid #e6e6e6;
       padding: 10px;
       > .itemTag{
-        width: 80px;
         display: flex;
         align-items: center;
         .itemTag-Name{
-          width: 48px;
           font-size: 16px;
           margin-left: 15px;
         }
