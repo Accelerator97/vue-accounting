@@ -18,7 +18,7 @@
       <button @click="inputContent" >0</button>
       <button @click="clear" >清空</button>
       <button
-        v-if=" finalStr && '-+'.indexOf(finalStr) >=0"
+        v-if="output.indexOf('+') >=0 ||output.indexOf('-') >=0"
         @click="calculate(output)"
       >
         =

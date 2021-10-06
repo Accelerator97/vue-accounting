@@ -56,8 +56,8 @@ export default class extends Vue {
   }
   create() {
     let { tagName, iconName, type } = this;
-    if (!tagName || tagName.length === 0) {
-      window.alert("请输入标签名");
+    if (!tagName || tagName.length > 4) {
+      window.alert("标签名不能为空或者不要超过四个字符");
       return;
     }
     this.$store.commit("createTag", {

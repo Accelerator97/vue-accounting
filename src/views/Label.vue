@@ -73,11 +73,11 @@ export default class Label extends Vue {
   }
 }
 .createTag {
-  // font-family: ;
   border-radius: 4px;
   border: none;
   height: 40px;
   padding: 0 16px;
+  margin:0 auto;
   &-Wrapper {
     text-align: center;
     padding: 16px;
