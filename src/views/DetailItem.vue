@@ -89,7 +89,7 @@ export default class DetailItem extends Vue {
     text-align: center;
     font-size: 16px;
     padding: 12px 16px; //整个navBar的高度为48，字体占了16，剩下的用padding来撑开
-    background: white;
+    background: #ffda44;
     display: flex;
     justify-content: space-between;
     align-items: center;

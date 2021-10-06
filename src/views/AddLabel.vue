@@ -81,7 +81,6 @@ export default class extends Vue {
   text-align: center;
   font-size: 16px;
   padding: 12px 16px;
-  background: white;
   display: flex;
   justify-content: space-between;
   align-items: center;

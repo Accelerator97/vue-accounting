@@ -40,7 +40,7 @@ import clone from "@/lib/clone";
 import Chart from "@/components/Chart.vue";
 import _ from "lodash";
 
-type CategoryArray = {name:string,value:number}
+type CategoryArray = { name: string; value: number };
 
 @Component({
   components: { Tabs, Chart },
@@ -104,10 +104,10 @@ export default class Statistics extends Vue {
     return [...totalMap];
   }
   get chartOptions() {
-    const chartData = this.valueNameList.reduce((result,item)=>{
-      result.push({'name':item[0],'value':item[1]})
-      return result
-    },[] as CategoryArray[])
+    const chartData = this.valueNameList.reduce((result, item) => {
+      result.push({ name: item[0], value: item[1] });
+      return result;
+    }, [] as CategoryArray[]);
     return {
       series: [
         {
@@ -128,50 +128,46 @@ export default class Statistics extends Vue {
         trigger: "item",
         formatter: "{b}:{c}元({d}%)",
       },
+      roam : 'scale'
     };
   }
 }
 </script>
 
 <style lang="scss" scoped>
-::v-deep .type-tabs-item {
-  background: white;
-  &.selected {
-    background: #c4c4c4;
-    &::after {
-      display: none;
-    }
-  }
-}
-.chooseDate {
-  padding-top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  ::v-deep .el-input__inner {
-    background-color: inherit;
-    padding-left: 70px;
-    font-size: 16px;
-  }
-}
-.main {
-  overflow: auto;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-  .report {
+  .chooseDate {
     padding-top: 10px;
-    display: flex;
-    justify-content: center;
-  }
-  .chart{
-    overflow: auto;
-    max-height: 395px;
-    ::v-deep .canvas{
-      height: inherit;
+    left: 50%;
+    transform: translateX(-50%);
+    ::v-deep .el-input__inner {
+      background-color: inherit;
+      padding-left: 70px;
+      font-size: 16px;
     }
-    &::-webkit-scrollbar{
+  }
+  .main {
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    &::-webkit-scrollbar {
       display: none;
     }
+    .report {
+      padding-top: 10px;
+      display: flex;
+      justify-content: center;
+    }
+    .chart {
+      overflow: auto;
+      max-height: 395px;
+      ::v-deep .canvas {
+        display: flex;
+        height: inherit;
+      }
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
   }
-}
+
 </style>

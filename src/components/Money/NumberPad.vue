@@ -92,8 +92,6 @@ export default class NumberPad extends Vue {
       str = str.substr(0, str.length - 1);
     }
     let result = this.getTotal(str).toString()
-    this.firstStr = result.substr(0, 1);
-    console.log(this.firstStr);
     this.output = result;
   }
 }

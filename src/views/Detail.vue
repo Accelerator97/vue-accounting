@@ -115,7 +115,7 @@ export default class Detail extends Vue {
 .title {
   height: 64px;
   margin-bottom: 5px;
-  background: #c4c4c4;
+  background: #ffda44;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -143,6 +143,7 @@ export default class Detail extends Vue {
     &-title {
       display: flex;
       justify-content: space-between;
+      padding:10px;
     }
     &-item {
       &:not(:first-child) {
@@ -152,11 +153,15 @@ export default class Detail extends Vue {
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid #e6e6e6;
+      padding: 10px;
       > .itemTag{
         width: 80px;
+        display: flex;
+        align-items: center;
         .itemTag-Name{
           width: 48px;
-          margin-left: 10px;
+          font-size: 16px;
+          margin-left: 15px;
         }
       }
     }
