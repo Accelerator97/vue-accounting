@@ -53,6 +53,7 @@ html {
   height: 100%;
 }
 body {
+  touch-action: manipulation; //双击button禁止放大
   font-family: $font-hei;
   font-size: 16px;
   line-height: 1.5;

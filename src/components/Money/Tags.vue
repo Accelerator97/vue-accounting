@@ -37,8 +37,6 @@ export default class Tags extends Vue {
   }
   created() {
     this.$store.commit("fetchTags");
-    console.log(this.previousTag);
-    // console.log(this.selectedTag)
   }
   toggle(tag: tag) {
     const index = this.selectedTag.indexOf(tag);
