@@ -71,9 +71,6 @@ export default class Money extends Vue {
       this.reloadWeb();
     }
   }
-  getDate(xx: any) {
-    console.log(xx);
-  }
 }
 </script>
 
@@ -87,6 +84,7 @@ export default class Money extends Vue {
   }
 }
 .wrapper {
+  border-top: 1px solid #e4e4e4;
   position: relative;
   min-height: 40px;
   .notes {

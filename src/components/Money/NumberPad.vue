@@ -9,42 +9,57 @@
       <button @click="inputContent">4</button>
       <button @click="inputContent">5</button>
       <button @click="inputContent">6</button>
-      <button @click="clear">清空</button>
+      <button @click="inputContent">+</button>
       <button @click="inputContent">7</button>
       <button @click="inputContent">8</button>
       <button @click="inputContent">9</button>
-      <button class="ok" @click="ok">OK</button>
-      <button @click="inputContent" class="zero">0</button>
-      <button @click="inputContent" class="point">.</button>
+      <button @click="inputContent">-</button>
+      <button @click="inputContent">.</button>
+      <button @click="inputContent">0</button>
+      <button @click="clear">清空</button>
+      <button v-if="output.indexOf('+')>= 0 || output.indexOf('-')>= 0"  @click="calculate(output)">=</button>
+      <button v-else class="ok" @click="ok">OK</button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import { Component,Prop } from "vue-property-decorator";
+import { Component, Prop } from "vue-property-decorator";
 @Component
 export default class NumberPad extends Vue {
   @Prop(Number) readonly value!: number;
   output = this.value.toString();
-  inputContent(event: MouseEvent){
+  finalStr = ''
+  input = "";
+  total = 0;
+  inputContent(event: MouseEvent) {
     const button = event.target as HTMLButtonElement;
-    const input = button.textContent!;
+    this.input = button.textContent!;
+    this.finalStr = this.output.substr(this.output.length-1,1)
     if (this.output.length === 16) {
       return;
     }
     if (this.output === "0") {
-      if ("0123456789".indexOf(input) >= 0) {
-        this.output = input;
+      if ("0123456789".indexOf(this.input) >= 0) {
+        this.output = this.input;
       } else {
-        this.output += input;
+        //点击小数点
+        this.output += this.input;
       }
       return;
     }
-    if (this.output.indexOf(".") >= 0 && input === ".") {
+    if (this.output.indexOf(".") >= 0 && this.input === ".") {
       return;
     }
-    this.output += input;
+    if ('-+'.indexOf(this.finalStr) === -1 && '-+'.indexOf(this.input)>=0) {      
+      let result = this.getTotal(this.output);
+      this.output = result.toString()
+    }
+    if('-+'.indexOf(this.finalStr) >= 0 && '-+'.indexOf(this.input)>=0){
+      return 
+    }
+    this.output += this.input;
   }
   remove(): void {
     if (this.output.length === 1) {
@@ -56,10 +71,22 @@ export default class NumberPad extends Vue {
   clear() {
     this.output = "0";
   }
-  ok(){
-    this.$emit('update:value',parseFloat(this.output))
-    this.$emit('submit',parseFloat(this.output))
-    this.output = '0'
+  ok() {
+    this.$emit("update:value", parseFloat(this.output));
+    this.$emit("submit", parseFloat(this.output));
+    this.output = "0";
+  }
+  getTotal(str: string) {
+    let fn = Function;
+    return new fn('return ' + str)();
+  }
+  calculate(str:string){
+    this.finalStr = str.substr(str.length-1,1)
+    if('-+'.indexOf(this.finalStr) >= 0){
+      str = str.substr(0,str.length-1)
+    }
+    let result = this.getTotal(str)
+    this.output = result.toString()
   }
 }
 </script>
@@ -68,17 +95,20 @@ export default class NumberPad extends Vue {
 @import "~@/assets/style/helper.scss";
 .numberPad {
   .output {
-    @extend %innerShadow;
+    // @extend %innerShadow;
     font-size: 36px;
     font-family: Consolas, monospace;
     padding: 5px 16px;
     text-align: right;
-    max-height:60px;
+    max-height: 60px;
+    border-top: 1px solid #e4e4e4;
   }
   .buttons {
     @extend %clearFix;
     > button {
-      font-size:20px;
+      background: #f7f7f7 !important;
+      border: 1px solid #e4e4e4 !important;
+      font-size: 20px;
       width: 25%;
       height: 48px;
       float: left;
@@ -86,44 +116,7 @@ export default class NumberPad extends Vue {
       border: none;
       cursor: pointer;
       &.ok {
-        height: 144px;
-        float: right;
-      }
-      &.point{
-        height: 48 + 16*3px;
-      }
-      &.zero {
-        width: 25 * 2%;
-        height: 48 + 16*3px;
-      }
-      $bg: #f2f2f2;
-      &:nth-child(1) {
-        background: $bg;
-      }
-      &:nth-child(2),
-      &:nth-child(5) {
-        background: darken($bg, 4%);
-      }
-      &:nth-child(3),
-      &:nth-child(6),
-      &:nth-child(9) {
-        background: darken($bg, 4 * 2%);
-      }
-      &:nth-child(4),
-      &:nth-child(7),
-      &:nth-child(10) {
-        background: darken($bg, 4 * 3%);
-      }
-      &:nth-child(8),
-      &:nth-child(11),
-      &:nth-child(13) {
-        background: darken($bg, 4 * 4%);
-      }
-      &:nth-child(14) {
-        background: darken($bg, 4 * 5%);
-      }
-      &:nth-child(12) {
-        background: darken($bg, 4 * 6%);
+        background: #ffda44;
       }
     }
   }

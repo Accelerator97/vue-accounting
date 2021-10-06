@@ -23,8 +23,9 @@ export default {
 .icon {
   width: 2em;
   height: 2em;
-  vertical-align: -0.6em;
+  vertical-align: -0.15em;
   fill: currentColor;
   overflow: hidden;
+  font-size:16px;
 }
 </style>

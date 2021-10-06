@@ -71,17 +71,17 @@ export default class Tags extends Vue {
     flex-grow: 1;
     justify-content: space-between;
     align-content: flex-start;
-
     > li {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       margin-bottom: 10px;
-      $bg: #d9d9d9;
+      $bg: #f7f7f7;
       background: $bg;
       width: 20%;
-      border-radius: 10px;
+      height: 60px;
+      border-radius: 50%;
       margin-right: 12px;
       &:nth-child(4n) {
         margin-right: 0;
@@ -94,13 +94,15 @@ export default class Tags extends Vue {
       &:last-child:nth-child(4n - 2) {
         margin-right: calc(40% + 40% / 3);
       }
+      .icon{
+        padding-top:2px;
+      }
       span {
         padding-left: 2px;
         min-width: 2em;
       }
       &.selected {
-        background: darken($bg, 50%);
-        color: white;
+        background: #ffda44;
       }
     }
   }

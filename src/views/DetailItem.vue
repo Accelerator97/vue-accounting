@@ -105,14 +105,12 @@ export default class DetailItem extends Vue {
   }
   .detail-item {
     li {
-      height: 36px;
+      border-bottom: 1px solid #e4e4e4;
+      height: 40px;
       display: flex;
       justify-content: space-between;
-      padding: 0 10px;
-      border-bottom：1px solid #e6e6e6
-      &:not(:first-child) {
-        margin-top: 10px;
-      }
+      padding: 0 20px;
+      margin-top: 10px;
     }
   }
   .operation {
