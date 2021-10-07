@@ -18,8 +18,16 @@ const icons = [
     {id:17,iconName:'tongxun'},
     {id:18,iconName:'yule'},
     {id:19,iconName:'chongwu'},
-    {id:20,iconName:'yaoping'},
-
+    {id:20,iconName:'bangong'},
+    {id:21,iconName:'shuiguo'},
+    {id:22,iconName:'yundong'},
+    {id:23,iconName:'ertong'},
+    {id:24,iconName:'laoren'},
+    {id:25,iconName:'weixiu'},
+    {id:26,iconName:'juanzeng'},
+    {id:27,iconName:'caipiao'},
+    {id:28,iconName:'meirong'},
+    {id:29,iconName:'shucai'},
 ]
 
 export {icons}

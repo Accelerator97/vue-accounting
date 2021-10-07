@@ -16,8 +16,8 @@
         <span>{{ tag.name }}</span>
       </li>
       <li @click="edit">
-        <div class="tagIcon">
-          <Icon iconName="shezhi" />
+        <div class="tagIcon" >
+          <Icon iconName="shezhi"/>
         </div>
         <span>设置</span>
       </li>
@@ -75,14 +75,11 @@ export default class Tags extends Vue {
     justify-content: space-between;
     align-content: flex-start;
     > li {
-      margin-bottom: 5px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       margin-bottom: 10px;
-      // $bg: #f7f7f7;
-      // background: $bg;
       width: 20%;
       height: 60px;
       border-radius: 50%;
@@ -103,7 +100,7 @@ export default class Tags extends Vue {
         padding: 5px;
         text-align: center;
         vertical-align: middle;
-        margin-bottom: 5px;
+        margin-bottom: 2px;
         width: 45px;
         height: 45px;
         border-radius: 50%;

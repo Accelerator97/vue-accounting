@@ -1,26 +1,31 @@
 <template>
   <Layout class-prefix="layout">
     <Tabs :data-source="recordTypeList" :value.sync="record.type" />
-    <Tags @update:value="onUpdateTag" :type.sync="record.type" />
-    <div class="wrapper">
-      <div class="notes">
-        <FormItem
-          field-name="备注:"
-          placeholder="在这里输入备注"
-          :value.sync="record.notes"
+    <Tags
+      @update:value="onUpdateTag"
+      :type.sync="record.type"
+    />
+    <div class="inputSection" v-if="isShowInputSection">
+      <div class="wrapper">
+        <div class="notes">
+          <FormItem
+            field-name="备注:"
+            placeholder="在这里输入备注"
+            :value.sync="record.notes"
+          />
+        </div>
+        <DatePicker
+          v-model="record.createAt"
+          type="date"
+          format="yyyy-MM-dd"
+          value-format="yyyy-MM-dd"
+          placeholder="选择日期"
+          @change="getDate(record.createAt)"
+          class="createAt"
         />
       </div>
-      <DatePicker
-        v-model="record.createAt"
-        type="date"
-        format="yyyy-MM-dd"
-        value-format="yyyy-MM-dd"
-        placeholder="选择日期"
-        @change="getDate(record.createAt)"
-        class="createAt"
-      />
+      <NumberPad :value.sync="record.amount" @submit="saveRecord" />
     </div>
-    <NumberPad :value.sync="record.amount" @submit="saveRecord" />
   </Layout>
 </template> 
 
@@ -41,6 +46,7 @@ export default class Money extends Vue {
   get recordList(): RecordItem[] {
     return this.$store.state.recordList;
   }
+  isShowInputSection = false;
   record: RecordItem = {
     tag: [],
     notes: "",
@@ -57,6 +63,7 @@ export default class Money extends Vue {
   }
   onUpdateTag(value: string[]) {
     this.record.tag = value;
+    this.isShowInputSection = true
   }
   saveRecord() {
     if (!this.record.tag || this.record.tag.length === 0) {
@@ -65,12 +72,13 @@ export default class Money extends Vue {
     if (!this.record.amount || this.record.amount === 0) {
       return window.alert("请输入金额");
     }
-    if(this.record.amount <=0){
-      return window.alert('金额小于0')
+    if (this.record.amount <= 0) {
+      return window.alert("金额小于0");
     }
     this.$store.commit("createRecord", this.record);
     if (this.$store.state.createRecordError === null) {
       window.alert("保存成功");
+      this.isShowInputSection = false
       this.reloadWeb();
     }
   }
