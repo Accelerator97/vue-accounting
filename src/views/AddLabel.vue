@@ -146,7 +146,7 @@ export default class extends Vue {
   padding: 16px;
   margin-top: 44-16px;
   > .updateButton {
-    margin-right: 30px;
+    margin: 0 auto;
   }
 }
 </style>

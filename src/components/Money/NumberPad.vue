@@ -47,7 +47,6 @@ export default class NumberPad extends Vue {
       } else {
         this.output = character;
       }
-      this.isStarted = true;
       return;
     }
     //输入数字
@@ -62,7 +61,6 @@ export default class NumberPad extends Vue {
         this.isOperatorAdded = false
       }
       this.output += character;
-      this.isStarted = true;
     }
 
     //输入运算符
@@ -78,9 +76,14 @@ export default class NumberPad extends Vue {
     return new fn("return " + str)();
   }
   getFinalResult(str:string){
-      let result = this.calculate(str).toFixed(2)
+      let result = parseFloat(this.calculate(str).toFixed(2)).toString()
       this.output = result
+      this.isDecimalAdded = false
+      this.isOperatorAdded = false
       this.isStarted = false
+      if(this.output.indexOf('.')>=0){
+        this.isDecimalAdded = true
+      }
   }
   clear() {
     this.output = "0";
@@ -103,9 +106,7 @@ export default class NumberPad extends Vue {
     }else{
       this.output = this.output.slice(0, -1);
     }
-    
   }
-
   ok() {
     this.$emit("update:value", parseFloat(this.output));
     this.$emit("submit", parseFloat(this.output));
