@@ -1,21 +1,24 @@
 <template>
   <div class="tags">
     <ul class="current">
-      <li
-        v-for="tag in tagList"
-        :key="tag.id"
-        @click="toggle(tag)"
-        :class="{
-          selected:
-            selectedTag.indexOf(tag) >= 0 ||
-            (previousTag && previousTag[0].id === tag.id),
-        }"
-      >
-        <Icon :iconName="tag.iconName"></Icon>
+      <li v-for="tag in tagList" :key="tag.id">
+        <div
+          class="tagIcon"
+          @click="toggle(tag)"
+          :class="{
+            selected:
+              selectedTag.indexOf(tag) >= 0 ||
+              (previousTag && previousTag[0].id === tag.id),
+          }"
+        >
+          <Icon :iconName="tag.iconName"></Icon>
+        </div>
         <span>{{ tag.name }}</span>
       </li>
       <li @click="edit">
-        <Icon iconName="shezhi" />
+        <div class="tagIcon">
+          <Icon iconName="shezhi" />
+        </div>
         <span>设置</span>
       </li>
     </ul>
@@ -72,13 +75,14 @@ export default class Tags extends Vue {
     justify-content: space-between;
     align-content: flex-start;
     > li {
+      margin-bottom: 5px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       margin-bottom: 10px;
-      $bg: #f7f7f7;
-      background: $bg;
+      // $bg: #f7f7f7;
+      // background: $bg;
       width: 20%;
       height: 60px;
       border-radius: 50%;
@@ -94,15 +98,22 @@ export default class Tags extends Vue {
       &:last-child:nth-child(4n - 2) {
         margin-right: calc(40% + 40% / 3);
       }
-      .icon{
-        padding-top:2px;
+      .tagIcon {
+        background: #ddd;
+        padding: 5px;
+        text-align: center;
+        vertical-align: middle;
+        margin-bottom: 5px;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        &.selected {
+          background: #ffda44;
+        }
       }
       span {
         padding-left: 2px;
         min-width: 2em;
-      }
-      &.selected {
-        background: #ffda44;
       }
     }
   }

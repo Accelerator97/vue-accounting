@@ -22,7 +22,15 @@
           :key="icon.id"
           @click="setIconName(icon.iconName)"
         >
-          <Icon :iconName="icon.iconName" />
+          <div
+            class="tagIcon"
+            @click="toggle(icon.iconName)"
+            :class="{
+              selected: iconName === icon.iconName,
+            }"
+          >
+            <Icon :iconName="icon.iconName" />
+          </div>
         </li>
       </ul>
     </div>
@@ -54,6 +62,9 @@ export default class extends Vue {
   setIconName(iconName: string) {
     this.iconName = iconName;
   }
+  toggle(name: string) {
+    this.iconName = name;
+  }
   create() {
     let { tagName, iconName, type } = this;
     if (!tagName || tagName.length > 4) {
@@ -68,7 +79,7 @@ export default class extends Vue {
     if (this.$store.state.createTagError === null) {
       window.alert("创建成功");
       this.$router.back();
-    }else {
+    } else {
       window.alert("创建失败：标签名重复");
       tagName = "";
     }
@@ -109,12 +120,23 @@ export default class extends Vue {
     justify-content: space-between;
     flex-wrap: wrap;
     li {
+      padding: 10px;
       width: 25%;
-      padding: 20px;
-      text-align: center;
-      > .icon {
-        width: 38px;
-        height: 38px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      > .tagIcon {
+        background: #ddd;
+        padding: 5px;
+        text-align: center;
+        vertical-align: middle;
+        margin-bottom: 5px;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        &.selected {
+          background: #ffda44;
+        }
       }
     }
   }

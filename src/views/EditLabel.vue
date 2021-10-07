@@ -17,12 +17,16 @@
     </div>
     <div class="icons-list">
       <ul>
-        <li
-          v-for="icon in icons"
-          :key="icon.id"
-          @click="setIconName(icon.iconName)"
-        >
-          <Icon :iconName="icon.iconName" />
+        <li v-for="icon in icons" :key="icon.id">
+          <div
+            class="tagIcon"
+            @click="toggle(icon.iconName)"
+            :class="{
+              selected: selectedIcon === icon.iconName
+            }"
+          >
+            <Icon :iconName="icon.iconName" />
+          </div>
         </li>
       </ul>
     </div>
@@ -48,6 +52,7 @@ export default class EditLabel extends Vue {
   type = "-";
   icons = icons;
   tagName = "";
+  selectedIcon ='';
   get currentTag() {
     return this.$store.state.currentTag;
   }
@@ -60,9 +65,15 @@ export default class EditLabel extends Vue {
     this.$store.commit("fetchRecords");
     this.$store.commit("setCurrentTag", id);
     this.tagName = this.currentTag.name;
-
+    this.selectedIcon = this.currentTag.iconName
     if (!this.currentTag) {
       this.$router.replace("/404");
+    }
+  }
+  toggle(name: string) {
+    this.selectedIcon = name;
+    if (this.selectedIcon) {
+      this.currentTag.iconName = this.selectedIcon;
     }
   }
   setIconName(iconName: string) {
@@ -136,11 +147,19 @@ export default class EditLabel extends Vue {
     li {
       width: 25%;
       padding: 20px;
-      flex-basis:0;
-      > .icon {
-        margin:  10px;
-        width: 38px;
-        height: 38px;
+      flex-basis: 0;
+      > .tagIcon {
+        background: #ddd;
+        padding: 5px;
+        text-align: center;
+        vertical-align: middle;
+        margin-bottom: 5px;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        &.selected {
+          background: #ffda44;
+        }
       }
     }
   }
