@@ -2,28 +2,23 @@
   <div class="numberPad">
     <div class="output">{{ output }}</div>
     <div class="buttons">
-      <button @click="inputContent" >1</button>
-      <button @click="inputContent" >2</button>
-      <button @click="inputContent" >3</button>
-      <button @click="remove" >删除</button>
-      <button @click="inputContent" >4</button>
-      <button @click="inputContent" >5</button>
-      <button @click="inputContent" >6</button>
-      <button @click="inputContent" >+</button>
-      <button @click="inputContent" >7</button>
-      <button @click="inputContent" >8</button>
-      <button @click="inputContent" >9</button>
-      <button @click="inputContent" >-</button>
-      <button @click="inputContent" >.</button>
-      <button @click="inputContent" >0</button>
-      <button @click="clear" >清空</button>
-      <button
-        v-if="output.indexOf('+') >=0 ||output.indexOf('-') >=0"
-        @click="calculate(output)"
-      >
-        =
-      </button>
-      <button v-else class="ok" @click="ok">OK</button>
+      <button @click="append('1')">1</button>
+      <button @click="append('2')">2</button>
+      <button @click="append('3')">3</button>
+      <button @click="deleteContent">删除</button>
+      <button @click="append('4')">4</button>
+      <button @click="append('5')">5</button>
+      <button @click="append('6')">6</button>
+      <button @click="append('+')">+</button>
+      <button @click="append('7')">7</button>
+      <button @click="append('8')">8</button>
+      <button @click="append('9')">9</button>
+      <button @click="append('-')">-</button>
+      <button @click="append('.')">.</button>
+      <button @click="append('0')">0</button>
+      <button @click="clear">清空</button>
+      <button @click="getFinalResult(output)" v-if="isStarted">=</button>
+      <button class="ok" @click="ok" v-else>OK</button>
     </div>
   </div>
 </template>
@@ -35,67 +30,86 @@ import { Component, Prop } from "vue-property-decorator";
 export default class NumberPad extends Vue {
   @Prop(Number) readonly value!: number;
   output = this.value.toString();
-  finalStr = "";
-  input = "";
-  total = 0;
-  created(){
-    console.log(this.finalStr)
-    console.log('1111');
+  isDecimalAdded = false; //判断小数点是否输入
+  isOperatorAdded = false; //判断运算符运算符是否输入
+  isStarted = false; //判断数字是否输入
+
+  isOperator(character: string) {
+    //判断是否是运算符号
+    return ["+", "-"].indexOf(character) > -1;
   }
-  inputContent(event: MouseEvent) {
-    const button = event.target as HTMLButtonElement;
-    this.input = button.textContent!;
-    this.finalStr = this.output.substr(this.output.length - 1, 1);
-    if (this.output.length === 16) {
-      return;
-    }
-    if (this.output === "0") {
-      if ("0123456789".indexOf(this.input) >= 0) {
-        this.output = this.input;
+  append(character: string) {
+    //初始值是0，并且没有输入运算符
+    if (this.output === "0" && !this.isOperator(character)) {
+      if (character === ".") {
+        this.output += character;
+        this.isDecimalAdded = true
       } else {
-        //点击小数点
-        this.output += this.input;
+        this.output = character;
       }
+      this.isStarted = true;
       return;
     }
-    if (this.output.indexOf(".") >= 0 && this.input === ".") {
-      return;
+    //输入数字
+    if (!this.isOperator(character)) {
+      if (character === "." && this.isDecimalAdded === true) {
+        return;
+      }
+      if (character === ".") {
+        this.isDecimalAdded = true;
+        this.isOperatorAdded = true
+      }else{
+        this.isOperatorAdded = false
+      }
+      this.output += character;
+      this.isStarted = true;
     }
-    if ("-+".indexOf(this.finalStr) === -1 && "-+".indexOf(this.input) >= 0) {
-      let result = this.getTotal(this.output);
-      this.output = result.toString();
+
+    //输入运算符
+    if(this.isOperator(character) && !this.isOperatorAdded){
+      this.output += character
+      this.isDecimalAdded = false 
+      this.isOperatorAdded = true
+      this.isStarted = true;
     }
-    if ("-+".indexOf(this.finalStr) >= 0 && "-+".indexOf(this.input) >= 0) {
-      return;
-    }
-    this.output += this.input;
   }
-  remove(): void {
-    if (this.output.length === 1) {
-      this.output = "0";
-    } else {
-      this.output = this.output.slice(0, -1);
-    }
+  calculate(str: string) {
+    let fn = Function;
+    return new fn("return " + str)();
+  }
+  getFinalResult(str:string){
+      let result = this.calculate(str)
+      this.output = result.toString()
+      this.isStarted = false
   }
   clear() {
     this.output = "0";
+    this.isDecimalAdded = false;
+    this.isOperatorAdded = false;
+    this.isStarted = false;
   }
+  deleteContent(){
+    const lastStr = this.output.substr(this.output.length-1,1)
+    if (this.output.length === 1) {
+      this.output = "0";
+      return 
+    }
+    if(lastStr === '.'){
+      this.output = this.output.slice(0, -1);
+      this.isDecimalAdded = false
+    }else if('+-'.indexOf(lastStr) >=0){
+      this.output = this.output.slice(0, -1);
+      this.isOperatorAdded = false
+    }else{
+      this.output = this.output.slice(0, -1);
+    }
+    
+  }
+
   ok() {
     this.$emit("update:value", parseFloat(this.output));
     this.$emit("submit", parseFloat(this.output));
     this.output = "0";
-  }
-  getTotal(str: string) {
-    let fn = Function;
-    return new fn("return " + str)();
-  }
-  calculate(str: string) {
-    this.finalStr = str.substr(str.length - 1, 1);
-    if ("-+".indexOf(this.finalStr) >= 0) {
-      str = str.substr(0, str.length - 1);
-    }
-    let result = this.getTotal(str).toString()
-    this.output = result;
   }
 }
 </script>
@@ -120,7 +134,7 @@ export default class NumberPad extends Vue {
       height: 48px;
       float: left;
       background: transparent;
-      border: 1px solid #e4e4e4 ;
+      border: 1px solid #e4e4e4;
       &.ok {
         background: #ffda44;
       }
