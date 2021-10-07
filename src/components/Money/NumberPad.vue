@@ -78,8 +78,8 @@ export default class NumberPad extends Vue {
     return new fn("return " + str)();
   }
   getFinalResult(str:string){
-      let result = this.calculate(str)
-      this.output = result.toString()
+      let result = this.calculate(str).toFixed(2)
+      this.output = result
       this.isStarted = false
   }
   clear() {
