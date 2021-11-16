@@ -82,10 +82,10 @@ export default class Detail extends Vue {
       }
     }
     result.forEach((group) => {
-      group.total = group.items.reduce(
+      group.total = Math.round(group.items.reduce(
         (sum, items) => sum + parseFloat(items.type + items.amount),
         0
-      );
+      )*100)/100;
     });
     return result;
   }

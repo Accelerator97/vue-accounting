@@ -15,11 +15,11 @@
     <div class="main">
       <div class="report">
         <div v-if="type === '-'">
-          本月支出：{{ groupList[0].total }}元
+          本月支出：{{ beautify(groupList[0].total) }}元
           <div>共计{{ groupList[0].items.length }}条支出项目</div>
         </div>
         <div v-if="type === '+'">
-          本月收入：{{ groupList[0].total }}元
+          本月收入：{{ beautify(groupList[0].total) }}元
           <div>共计{{ groupList[0].items.length }}条收入项目</div>
         </div>
       </div>
@@ -32,13 +32,12 @@
 
 <script lang="ts">
 import Tabs from "@/components/Tabs.vue";
-import { Component, Watch } from "vue-property-decorator";
+import { Component } from "vue-property-decorator";
 import recordTypeList from "@/constants/recordTypeList";
 import Vue from "vue";
 import dayjs from "dayjs";
 import clone from "@/lib/clone";
 import Chart from "@/components/Chart.vue";
-import _ from "lodash";
 
 type CategoryArray = { name: string; value: number };
 
@@ -130,6 +129,9 @@ export default class Statistics extends Vue {
       },
       roam : 'scale'
     };
+  }
+  beautify(number:number){
+    return Math.round(number * 100) /100
   }
 }
 </script>

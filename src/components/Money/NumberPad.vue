@@ -60,6 +60,7 @@ export default class NumberPad extends Vue {
       }else{
         this.isOperatorAdded = false
       }
+      
       this.output += character;
     }
 
