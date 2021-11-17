@@ -20,7 +20,7 @@ type RootState = {
     createRecordError?:Error | null
     createTagError?:Error | null
     updateTagError?:Error | null
-    editRecord:RecordItem
+    editRecord?:RecordItem
 }
 type TagListModel = {
     data: tag[],

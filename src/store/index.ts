@@ -17,8 +17,7 @@ const store = new Vuex.Store({
     createRecordError: null,
     createTagError: null,
     updateTagError: null,
-    groupList: [],
-  } as unknown as RootState,
+  } as RootState,
   mutations: { //method 同步操作,数据的增删改查,里面的函数只能接受两个参数，超过的话用payload
     fetchRecords(state) {
       state.recordList = JSON.parse(window.localStorage.getItem('recordList') || '[]')
